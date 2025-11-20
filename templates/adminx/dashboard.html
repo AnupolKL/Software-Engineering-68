@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}แดชบอร์ด | CUTCAMP{% endblock %}
+
+{% block content %}
+  <section class="max-w-7xl mx-auto p-6 bg-[#2a3731] rounded-xl">
+
+    <h1 class="text-3xl font-bold mb-6 text-white text-center">การจัดการ</h1>
+
+    <div class="flex flex-col md:flex-row gap-6">
+      <!-- Sidebar Tabs (Left) -->
+      <aside class="md:w-64 w-full">
+        <nav class="bg-white border rounded-2xl overflow-hidden">
+          <div class="px-4 py-3 text-sm text-black border-b bg-gray-300">เมนูจัดการ</div>
+
+          {% url 'admin_booking_list' as url_booking_list %}
+          {% url 'admin_booking_walkin' as url_booking_walkin %}
+          {% url 'admin_barber_list' as url_barber_list %}
+          {% url 'admin_service_list' as url_service_list %}
+
+          <a href="{{ url_booking_list }}"
+            class="flex items-center gap-3 px-4 py-3 border-b hover:bg-gray-200
+                    {% if request.path == url_booking_list %}bg-gray-100 font-semibold{% endif %}">
+            <span class="shrink-0 w-2 h-2 rounded-full
+                        {% if request.path == url_booking_list %}bg-gray-900{% else %}bg-gray-300{% endif %}"></span>
+            จัดการคิวทั้งหมด
+          </a>
+
+          <a href="{{ url_booking_walkin }}"
+            class="flex items-center gap-3 px-4 py-3 border-b hover:bg-gray-200
+                    {% if request.path == url_booking_walkin %}bg-gray-100 font-semibold{% endif %}">
+            <span class="shrink-0 w-2 h-2 rounded-full
+                        {% if request.path == url_booking_walkin %}bg-gray-900{% else %}bg-gray-300{% endif %}"></span>
+            เพิ่มคิว Walk-in
+          </a>
+
+          <a href="{{ url_barber_list }}"
+            class="flex items-center gap-3 px-4 py-3 border-b hover:bg-gray-200
+                    {% if request.path == url_barber_list %}bg-gray-100 font-semibold{% endif %}">
+            <span class="shrink-0 w-2 h-2 rounded-full
+                        {% if request.path == url_barber_list %}bg-gray-900{% else %}bg-gray-300{% endif %}"></span>
+            จัดการช่าง
+          </a>
+
+          <a href="{{ url_service_list }}"
+            class="flex items-center gap-3 px-4 py-3 hover:bg-gray-200
+                    {% if request.path == url_service_list %}bg-gray-100 font-semibold{% endif %}">
+            <span class="shrink-0 w-2 h-2 rounded-full
+                        {% if request.path == url_service_list %}bg-gray-900{% else %}bg-gray-300{% endif %}"></span>
+            จัดการบริการ
+          </a>
+        </nav>
+        <br>
+      </aside>
+
+      <!-- Main content (Right) -->
+      <div class="flex-1 space-y-8 ">
+        <!-- สรุปตัวเลขหลัก -->
+        <div class="grid md:grid-cols-5 gap-4">
+          <div class="border rounded p-4 bg-gray-200">
+            <div class="text-sm text-gray-500">คิววันนี้</div>
+            <div class="text-2xl font-bold">{{ stats.bookings_today }}</div>
+          </div>
+          <div class="border rounded p-4 bg-gray-200">
+            <div class="text-sm text-gray-500">Walk-in วันนี้</div>
+            <div class="text-2xl font-bold">{{ stats.walkins_today }}</div>
+          </div>
+          <div class="border rounded p-4 bg-gray-200">
+            <div class="text-sm text-gray-500">บริการที่เปิดอยู่</div>
+            <div class="text-2xl font-bold">{{ stats.services_active }}</div>
+          </div>
+          <div class="border rounded p-4 bg-gray-200">
+            <div class="text-sm text-gray-500">ช่าง</div>
+            <div class="text-2xl font-bold">{{ stats.barbers }}</div>
+          </div>
+        </div>
+
+        <!-- คิวล่าสุด -->
+        <div class="bg-white border rounded-2xl p-4">
+          <h2 class="text-lg font-semibold mb-3">คิวล่าสุด</h2>
+          <div class="overflow-x-auto">
+            <table class="min-w-full border rounded-xl overflow-hidden">
+              <thead class="bg-gray-300">
+                <tr>
+                  <th class="p-2 border">เริ่ม</th>
+                  <th class="p-2 border">บริการ</th>
+                  <th class="p-2 border">ช่าง</th>
+                  <th class="p-2 border">ลูกค้า</th>
+                  <th class="p-2 border">ชนิด</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for b in latest %}
+                  <tr class="odd:bg-white even:bg-gray-50">
+                    <td class="p-2 border whitespace-nowrap">{{ b.start_at|date:"Y-m-d H:i" }}</td>
+                    <td class="p-2 border">{{ b.service.name }}</td>
+                    <td class="p-2 border">{{ b.barber.username }}</td>
+                    <td class="p-2 border">{{ b.customer.username|default:"Walk-in" }}</td>
+                    <td class="p-2 border">{{ b.get_source_display }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td class="p-4 text-center" colspan="5">ยังไม่มีคิว</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+{% block title %}รีวิว | CUTCAMP{% endblock %}
+
+{% block content %}
+<section class="max-w-5xl mx-auto p-6 space-y-6 bg-[#2a3731] rounded-xl">
+
+  <h1 class="text-2xl font-bold text-white">รีวิวร้านและการบริการ</h1>
+  <h1 class="text-sm  text-gray-400">ให้คะแนนการบริการของเรา</h1>
+
+  <!-- ส่วนเขียนรีวิว (เฉพาะคนล็อกอิน) -->
+  {% if request.user.is_authenticated %}
+    <div class="rounded-2xl p-6 bg-white shadow-md">
+      <h2 class="text-lg font-semibold text-gray-900">เขียนรีวิว</h2>
+      <form method="post" class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+        {% csrf_token %}
+        <div class="md:col-span-1">
+          <label class="block text-sm text-gray-700 mb-2">บริการ</label>
+          {{ form.service }}
+          {% for e in form.service.errors %}<p class="text-rose-500 text-xs">{{ e }}</p>{% endfor %}
+        </div>
+        <div class="md:col-span-1">
+          <label class="block text-sm text-gray-700 mb-2">ให้คะแนน</label>
+
+        <div class="star-rating flex gap-1" aria-label="ให้คะแนน" role="radiogroup">
+            {% with form.rating.value as current_rating %}
+                {% for v in "12345" %}
+                <input type="radio"
+                        id="star{{ v }}"
+                        name="rating"
+                        value="{{ v }}"
+                        class="sr-only star-input"
+                        {% if current_rating|stringformat:"s" == v %}checked{% endif %}
+                        required>
+
+                <label for="star{{ v }}"
+                        class="cursor-pointer star-label"
+                        data-value="{{ v }}"
+                        title="{{ v }} ดาว">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-6 w-6 transition-colors duration-150
+                                {% if current_rating and current_rating|add:"0" >= v|add:"0" %}
+                                text-green-400
+                                {% else %}
+                                text-gray-300
+                                {% endif %}"
+                        viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.18 3.62a1 1 0 00.95.69h3.8c.969 0 1.371 1.24.588 1.81l-3.078 2.234a1 1 0 00-.364 1.118l1.18 3.62c.3.921-.755 1.688-1.54 1.118L10 13.347l-3.078 2.234c-.784.57-1.838-.197-1.54-1.118l1.18-3.62a1 1 0 00-.364-1.118L3.12 9.047c-.783-.57-.38-1.81.588-1.81h3.8a1 1 0 00.95-.69l1.18-3.62z"/>
+                    </svg>
+                </label>
+                {% endfor %}
+            {% endwith %}
+        </div>
+
+          {% for e in form.rating.errors %}<p class="text-rose-500 text-xs">{{ e }}</p>{% endfor %}
+        </div>
+        <div class="md:col-span-3">
+          <label class="block text-sm text-text-black mb-2">ความคิดเห็นเพิ่มเติม</label>
+          {{ form.comment }}
+          {% for e in form.comment.errors %}<p class="text-rose-500 text-xs">{{ e }}</p>{% endfor %}
+        </div>
+
+        <div class="md:col-span-3">
+          <button class="text-white bg-amber-600 hover:bg-amber-500 px-2 py-1 rounded-lg">ส่งรีวิว</button>
+        </div>
+      </form>
+    </div>
+  {% else %}
+    <div class="rounded-2xl p-4 bg-[var(--muted)] text-sm text-gray-200">
+      กรุณา <a href="{% url 'login' %}" class="text-teal-200 underline">เข้าสู่ระบบ</a> เพื่อเขียนรีวิว
+    </div>
+  {% endif %}
+
+  <!-- ส่วนดูรีวิวทั้งหมด + filter ตามบริการ -->
+  <div class="rounded-2xl p-4 bg-[var(--muted)]">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <h2 class="text-lg font-semibold text-white">รีวิวทั้งหมด</h2>
+      <form method="get" class="flex items-center gap-2">
+        <label class="text-sm text-gray-200">กรองตามบริการ:</label>
+        <select name="service" class="border rounded p-2 text-sm bg-white">
+          <option value="">ทั้งหมด</option>
+          {% for s in services %}
+            <option value="{{ s.id }}" {% if selected_service_id == s.id %}selected{% endif %}>
+              {{ s.name }}
+            </option>
+          {% endfor %}
+        </select>
+        <button class="px-3 py-1 border rounded text-sm bg-white">กรอง</button>
+      </form>
+    </div>
+
+    {% if reviews %}
+    <div id="review-list" class="mt-4 grid gap-4">
+        {% for r in reviews %}
+        <div class="review-item flex gap-4 p-4 rounded-xl bg-white items-start shadow-sm">
+            <div class="w-12 h-12 rounded-full bg-[#40524a] flex items-center justify-center text-white font-semibold text-lg">
+            {{ r.customer.username|slice:":1"|upper }}
+            </div>
+
+            <div class="flex-1">
+            <div class="flex items-start justify-between">
+                <div>
+                <div class="font-semibold text-sm text-gray-900">{{ r.customer.username }}</div>
+                <div class="text-xs text-gray-500">บริการ: {{ r.service.name }}</div>
+                </div>
+
+                <div class="text-sm flex items-center gap-2">
+                <div class="text-yellow-400">
+                    {% for _ in "12345" %}
+                    {% if forloop.counter <= r.rating %}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.18 3.62a1 1 0 00.95.69h3.8c.969 0 1.371 1.24.588 1.81l-3.078 2.234a1 1 0 00-.364 1.118l1.18 3.62c.3.921-.755 1.688-1.54 1.118L10 13.347l-3.078 2.234c-.784.57-1.838-.197-1.54-1.118l1.18-3.62a1 1 0 00-.364-1.118L3.12 9.047c-.783-.57-.38-1.81.588-1.81h3.8a1 1 0 00.95-.69l1.18-3.62z"/>
+                        </svg>
+                    {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="inline-block h-4 w-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.18 3.62a1 1 0 00.95.69h3.8c.969 0 1.371 1.24.588 1.81l-3.078 2.234a1 1 0 00-.364 1.118l1.18 3.62c.3.921-.755 1.688-1.54 1.118L10 13.347l-3.078 2.234c-.784.57-1.838-.197-1.54-1.118l1.18-3.62a1 1 0 00-.364-1.118L3.12 9.047c-.783-.57-.38-1.81.588-1.81h3.8a1 1 0 00.95-.69l1.18-3.62z"/>
+                        </svg>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="text-xs text-gray-400">{{ r.rating }}/5</div>
+                </div>
+            </div>
+
+            {% if r.comment %}
+                <p class="mt-2 text-sm text-gray-800">{{ r.comment }}</p>
+            {% endif %}
+
+            <p class="mt-2 text-xs text-gray-400">{{ r.created_at|date:"Y-m-d H:i" }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- ปุ่มแสดงเพิ่มเติม -->
+    <div class="flex justify-center mt-4">
+        <button id="load-more"
+                class="hidden px-4 py-2 bg-white border rounded-lg text-sm hover:bg-gray-100">
+        แสดงเพิ่มเติม
+        </button>
+    </div>
+
+    {% else %}
+    <div class="mt-4 p-4 bg-white rounded-lg text-sm text-gray-600">ยังไม่มีรีวิว</div>
+    {% endif %}
+    </div>
+  </div>
+
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const containers = document.querySelectorAll(".star-rating");
+
+  containers.forEach(container => {
+    const inputs = container.querySelectorAll(".star-input");
+    const labels = container.querySelectorAll(".star-label");
+
+    function updateStars(selectedValue) {
+      labels.forEach(label => {
+        const v = parseInt(label.dataset.value);
+        const svg = label.querySelector("svg");
+        if (v <= selectedValue) {
+          svg.classList.remove("text-gray-300");
+          svg.classList.add("text-green-400");
+        } else {
+          svg.classList.remove("text-green-400");
+          svg.classList.add("text-gray-300");
+        }
+      });
+    }
+
+    // เวลาเปลี่ยนค่า radio
+    inputs.forEach(input => {
+      input.addEventListener("change", function () {
+        const selected = parseInt(this.value);
+        updateStars(selected);
+      });
+    });
+
+    // ตอนโหลดหน้า ถ้ามีค่าอยู่แล้ว (กรณี form error กลับมา)
+    const checked = container.querySelector(".star-input:checked");
+    if (checked) {
+      updateStars(parseInt(checked.value));
+    }
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const reviews = document.querySelectorAll(".review-item");
+  const loadMoreBtn = document.getElementById("load-more");
+  const BATCH = 10;  // จำนวนรีวิวที่ต้องการแสดงต่อรอบ
+
+  let visibleCount = 10;
+
+  function updateDisplay() {
+    reviews.forEach((item, index) => {
+      if (index < visibleCount) {
+        item.style.display = "flex";   // แสดง
+      } else {
+        item.style.display = "none";   // ซ่อน
+      }
+    });
+
+    // ถ้ามีรีวิวมากกว่าที่มองเห็น แสดงปุ่ม load more
+    if (visibleCount < reviews.length) {
+      loadMoreBtn.classList.remove("hidden");
+    } else {
+      loadMoreBtn.classList.add("hidden");
+    }
+  }
+
+  loadMoreBtn.addEventListener("click", () => {
+    visibleCount += BATCH;
+    updateDisplay();
+  });
+
+  // เรียกตอนโหลดหน้าเว็บ เพื่อแสดงรีวิว 10 อันแรก
+  updateDisplay();
+});
+</script>
+
+{% endblock %}

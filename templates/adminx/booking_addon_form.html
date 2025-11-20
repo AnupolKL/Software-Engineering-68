@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}เพิ่มบริการเสริม | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-xl mx-auto p-6 space-y-4 bg-[#2a3731] rounded-xl">
+  <h1 class="text-2xl font-bold text-white">เพิ่มบริการเสริม</h1>
+  <div class="border rounded-xl p-4 bg-white">
+    <p><strong>คิว:</strong> {{ booking.service.name }} — ช่าง {{ booking.barber.username }}</p>
+    <p><strong>เริ่ม:</strong> {{ booking.start_at|date:"Y-m-d H:i" }} | <strong>สิ้นสุดเดิม:</strong> {{ booking.end_at|date:"Y-m-d H:i" }}</p>
+    {% if booking.total_price %}<p><strong>ยอดเดิม:</strong> ฿{{ booking.total_price }}</p>{% endif %}
+  </div>
+
+  <form method="post" class="space-y-4 border rounded-xl p-4 bg-white">
+    {% csrf_token %}
+    <div>
+      <label class="block text-sm mb-1">บริการเสริม</label>
+      {{ form.service }}
+      {% for e in form.service.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+    <div>
+      <label class="block text-sm mb-1">จำนวน</label>
+      {{ form.quantity }}
+      {% for e in form.quantity.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div class="flex gap-3">
+      <button class="bg-green-300 hover:bg-green-200 text-black px-5 py-2 rounded">เพิ่ม</button>
+      <a href="{% url 'admin_booking_list' %}" class="hover:bg-gray-300 px-5 py-2 border rounded">กลับ</a>
+    </div>
+  </form>
+
+  {% if booking.addons.all %}
+    <div class="border rounded-xl p-4 bg-white">
+      <h2 class="font-semibold mb-2">บริการเสริมที่เพิ่มแล้ว</h2>
+      <ul class="list-disc pl-6">
+        {% for a in booking.addons.all %}
+          <li>{{ a.name }} x{{ a.quantity }} — {{ a.duration_min }} นาที{% if a.price %} — ฿{{ a.price }}{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

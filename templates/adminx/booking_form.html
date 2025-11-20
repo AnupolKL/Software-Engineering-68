@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}เพิ่มคิว Walk-in | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-xl mx-auto p-6 space-y-4">
+  <a class="font-bold text-white" href="{% url 'admin_dashboard' %}">< กลับ</a>
+  <br><br>
+  <h1 class="text-2xl font-bold text-black bg-gray-200 p-4 rounded-xl">เพิ่มคิว Walk-in</h1>
+  <form method="post" class="space-y-4 bg-gray-200 p-4 rounded-xl">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div>
+      <label class="block text-sm">ช่าง</label>
+      {{ form.barber }}
+      {% for e in form.barber.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label class="block text-sm">บริการ</label>
+      {{ form.service }}
+      {% for e in form.service.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label class="block text-sm">วัน-เวลาเริ่ม</label>
+      {{ form.start_at }}
+      {% for e in form.start_at.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+      <p class="text-xs text-gray-500 mt-1">ระบบจะคำนวณเวลาสิ้นสุดอัตโนมัติตามระยะเวลาของบริการ</p>
+    </div>
+
+    <div>
+      <label class="block text-sm">หมายเหตุ (ถ้ามี)</label>
+      {{ form.notes }}
+    </div>
+
+    <div class="flex gap-3">
+      <button class="bg-green-200 text-black px-5 py-2 rounded">บันทึกคิว</button>
+      <a href="{% url 'admin_booking_list' %}" class="px-5 py-2 border rounded">ยกเลิก</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

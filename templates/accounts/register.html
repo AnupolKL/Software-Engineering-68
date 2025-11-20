@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}สมัครสมาชิก | CUTCAMP{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto p-6 text-white bg-[#2a3731] rounded-xl">
+  <h1 class="text-2xl font-semibold mb-4">สมัครสมาชิก</h1>
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div>
+      <label class="block text-sm">ชื่อผู้ใช้</label>
+      {{ form.username }}
+      {% for e in form.username.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label class="block text-sm">อีเมล</label>
+      {{ form.email }}
+      {% for e in form.email.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label class="block text-sm">รหัสผ่าน</label>
+      {{ form.password1 }}
+      {% for e in form.password1.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label class="block text-sm">ยืนยันรหัสผ่าน</label>
+      {{ form.password2 }}
+      {% for e in form.password2.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <button class="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500">สมัครสมาชิก</button>
+    <p class="text-sm mt-2">
+      มีบัญชีแล้ว?
+      <a class="text-blue-600" href="{% url 'login' %}">เข้าสู่ระบบ</a>
+    </p>
+  </form>
+</div>
+{% endblock %}

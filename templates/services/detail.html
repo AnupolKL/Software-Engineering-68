@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ service.name }} | CUTCAMP{% endblock %}
+
+{% block content %}
+<section class="max-w-5xl mx-auto p-6">
+  <div class="flex items-center justify-between mb-4">
+    <a href="{% url 'service_list' %}" class="text-teal-300 hover:underline">← กลับไปหน้าบริการ</a>
+    <div class="text-sm text-gray-300">บริการ: <span class="font-medium text-white">{{ service.name }}</span></div>
+  </div>
+
+  <div class="grid gap-6 md:grid-cols-3">
+    <div class="md:col-span-1">
+      {% if service.image %}
+        <div class="bg-[#2a3731] p-4 rounded-xl shadow-lg">
+          <img src="{{ service.image.url }}" alt="{{ service.name }}" class="w-full h-64 object-cover rounded-lg">
+        </div>
+      {% else %}
+        <div class="bg-[#2a3731] p-6 rounded-xl flex items-center justify-center h-64 text-gray-400">
+          ไม่มีรูปภาพ
+        </div>
+      {% endif %}
+      <div class="mt-4 grid grid-cols-3 gap-3">
+        <div class="bg-[#40524a] rounded-lg p-3 text-center shadow-sm">
+          <div class="text-xs text-gray-200">ระยะเวลา</div>
+          <div class="text-lg font-semibold text-teal-300">{{ service.duration_min }} นาที</div>
+        </div>
+        <div class="bg-[#40524a] rounded-lg p-3 text-center shadow-sm">
+          <div class="text-xs text-gray-200">ราคาเริ่มต้น</div>
+          <div class="text-lg font-semibold text-emerald-400">฿{{ service.price }}</div>
+        </div>
+        <div class="bg-[#40524a] rounded-lg p-3 text-center shadow-sm">
+          <div class="text-xs text-gray-200">สถานะ</div>
+          <div class="text-lg font-semibold text-teal-300">{% if service.is_active %}เปิดให้บริการ{% else %}ปิดชั่วคราว{% endif %}</div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <a href="{% url 'booking_step1' %}" class="w-full block text-center bg-black text-white rounded-xl px-5 py-3 hover:scale-[1.02] transform transition shadow-md">
+          จองออนไลน์
+        </a>
+      </div>
+    </div>
+
+    <div class="md:col-span-2">
+      <h1 class="text-white text-3xl font-bold">{{ service.name }}</h1>
+      <p class="mt-2 text-sm text-gray-300">รายละเอียดบริการ</p>
+
+      <div class="mt-6 bg-[#2a3731] rounded-xl p-6 shadow-inner">
+        <div class="prose prose-invert max-w-none text-sm leading-relaxed">
+          {{ service.description|linebreaks }}
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <span class="inline-block bg-[#40524a] text-teal-200 px-3 py-1 rounded-full text-sm">บริการยอดนิยม</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{% if mode == 'create' %}เพิ่มช่าง{% else %}แก้ไขช่าง{% endif %} | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-xl mx-auto p-6 space-y-4 bg-[#2a3731] rounded-xl text-white">
+  <a class="font-bold text-white" href="{% url 'admin_barber_list' %}">< กลับ</a>
+  <h1 class="text-2xl font-bold text-white">{% if mode == 'create' %}เพิ่มช่าง{% else %}แก้ไขช่าง{% endif %}</h1>
+  <form method="post" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div>
+      <label class="block text-sm">ชื่อผู้ใช้</label>
+      {{ form.username }}
+      {% for e in form.username.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label class="block text-sm">อีเมล</label>
+      {{ form.email }}
+      {% for e in form.email.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label class="block text-sm">รหัสผ่าน</label>
+      {{ form.password }}
+      {% for e in form.password.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+      <p class="text-xs text-gray-500 mt-1">ปล่อยว่างหากไม่เปลี่ยนรหัสผ่าน</p>
+    </div>
+    <div>
+      <label class="block text-sm">รูปช่าง (avatar)</label>
+      {{ form.avatar }}
+      {% if obj and obj.avatar %}
+        <img src="{{ obj.avatar.url }}" class="mt-2 w-24 h-24 rounded-full object-cover" alt="">
+      {% endif %}
+    </div>
+    <label class="inline-flex items-center gap-2">
+      {{ form.is_active }} <span>เปิดการใช้งาน</span>
+    </label>
+
+    <div class="flex gap-3">
+      <button class="text-black px-5 py-2 rounded bg-green-200 hover:bg-green-50">บันทึก</button>
+      <a href="{% url 'admin_barber_list' %}" class="px-5 py-2 border rounded hover:bg-gray-600">ยกเลิก</a>
+    </div>
+  </form>
+</section>
+{% endblock %}

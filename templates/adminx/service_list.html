@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}จัดการบริการ | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-6xl mx-auto p-6 bg-[#2a3731] rounded-xl">
+  <a class="font-bold text-white" href="{% url 'admin_dashboard' %}">< กลับ</a>
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-white">จัดการบริการ</h1>
+    <a href="{% url 'admin_service_create' %}" class="bg-green-200 text-black px-4 py-2 rounded">+ เพิ่มบริการ</a>
+  </div>
+
+  <form method="get" class="mt-4">
+    <input name="q" value="{{ q }}" placeholder="ค้นหาชื่อบริการ..."
+           class="border rounded p-2 w-full sm:w-80 bg-white">
+  </form>
+
+  <div class="mt-4 overflow-x-auto">
+    <table class="min-w-full border">
+      <thead class="bg-gray-300">
+        <tr>
+          <th class="p-2 border">ID</th>
+          <th class="p-2 border text-left">ชื่อบริการ</th>
+          <th class="p-2 border">เวลา (นาที)</th>
+          <th class="p-2 border">ราคา</th>
+          <th class="p-2 border">สถานะ</th>
+          <th class="p-2 border">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in services %}
+          <tr class="odd:bg-white even:bg-gray-50">
+            <td class="p-2 border text-center">{{ s.id }}</td>
+            <td class="p-2 border">{{ s.name }}</td>
+            <td class="p-2 border text-center">{{ s.duration_min }}</td>
+            <td class="p-2 border text-center">฿{{ s.price }}</td>
+            <td class="p-2 border text-center">
+              {% if s.is_active %}<span class="text-green-400">เปิด</span>{% else %}<span class="text-gray-500">ปิด</span>{% endif %}
+            </td>
+            <td class="p-2 border text-center">
+              <a class="bg-blue-300 hover:bg-blue-200 px-2 py-1 text-black rounded-lg" href="{% url 'admin_service_update' s.pk %}">แก้ไข</a>
+              <span class="mx-2 text-gray-400">|</span>
+              <a class="text-white bg-red-500 hover:bg-red-400 px-2 py-1 rounded-lg" href="{% url 'admin_service_delete' s.pk %}">ลบ</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td class="p-4 text-center" colspan="6">ยังไม่มีบริการ</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

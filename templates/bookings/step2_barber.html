@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}เลือกช่าง | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-4xl mx-auto p-6 space-y-4 bg-[#2a3731] rounded-xl">
+  <h1 class="text-2xl font-bold text-white">เลือกช่างสำหรับบริการ: {{ service.name }}</h1>
+
+  <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+    {% for b in barbers %}
+      <a href="{% url 'booking_step3' service.id b.id %}"
+         class="group border rounded-xl p-4 bg-white hover:shadow transition">
+        <div class="w-24 h-24 mx-auto rounded-full overflow-hidden">
+          {% if b.avatar %}
+            <img src="{{ b.avatar.url }}" class="w-full h-full object-cover" alt="{{ b.username }}">
+          {% else %}
+            <!-- fallback ถ้ายังไม่มีรูป -->
+            <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+              ไม่มีรูป
+            </div>
+          {% endif %}
+        </div>
+        <h2 class="text-center font-semibold mt-3 group-hover:underline">{{ b.username }}</h2>
+        <p class="text-center text-sm text-gray-600">ช่างประจำร้าน</p>
+      </a>
+    {% empty %}
+      <p>ยังไม่มีช่าง</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

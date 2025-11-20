@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}แก้ไขการจอง | CUTCAMP{% endblock %}
+
+{% block content %}
+<section class="max-w-5xl mx-auto p-6 space-y-6 bg-[#2a3731] rounded-xl">
+  <h1 class="text-2xl font-bold mb-2 text-white">แก้ไขการจอง</h1>
+
+  <div class="border rounded-2xl p-4 bg-white">
+    <p class="text-sm text-gray-600">
+      คิวเดิม: {{ booking.start_at|date:"Y-m-d H:i" }} • บริการ: {{ booking.service.name }} • ช่าง: {{ booking.barber.username }}
+    </p>
+  </div>
+
+  <!-- ฟอร์มเลือกบริการ / ช่าง / วัน -->
+  <form method="post" class="space-y-4 border rounded-2xl p-4 bg-white">
+    {% csrf_token %}
+    <div class="grid md:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm mb-1">บริการ</label>
+        {{ form.service }}
+        {% for e in form.service.errors %}<p class="text-red-600 text-xs">{{ e }}</p>{% endfor %}
+      </div>
+      <div>
+        <label class="block text-sm mb-1">ช่าง</label>
+        {{ form.barber }}
+        {% for e in form.barber.errors %}<p class="text-red-600 text-xs">{{ e }}</p>{% endfor %}
+      </div>
+      <div>
+        <label class="block text-sm mb-1">วัน</label>
+        {{ form.date }}
+        {% for e in form.date.errors %}<p class="text-red-600 text-xs">{{ e }}</p>{% endfor %}
+      </div>
+    </div>
+    <button class="px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg">ค้นหาเวลาว่าง</button>
+    <a href="{% url 'my_bookings' %}" class="hover:bg-gray-300 px-5 py-2 border rounded">
+      ย้อนกลับ
+    </a>
+  </form>
+
+  <!-- แสดง slot -->
+  {% if slots %}
+    <div class="border rounded-2xl p-4 bg-white">
+      <h2 class="text-lg font-semibold mb-3">
+        เลือกเวลาที่ต้องการสำหรับ {{ service.name }} กับช่าง {{ barber.username }} ในวันที่ {{ date }}
+      </h2>
+      <div class="grid sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {% for s in slots %}
+          <form method="post" class="inline">
+            {% csrf_token %}
+            {{ confirm_form.as_p }}
+            <input type="hidden" name="start_at" value="{{ s|date:'c' }}">
+            <button class="w-full border rounded-lg py-2 hover:bg-gray-50">
+              {{ s|date:"H:i" }}
+            </button>
+          </form>
+        {% endfor %}
+      </div>
+      <p class="text-xs text-gray-500 mt-2">*ต้องแก้ไขล่วงหน้าอย่างน้อย 1 ชั่วโมงก่อนถึงเวลาคิว</p>
+    </div>
+  {% elif slots is not none %}
+    <div class="border rounded-2xl p-4 bg-white">
+      <p class="text-gray-600">ไม่มีเวลาว่างตามที่เลือก ลองเลือกวันอื่นหรือช่างคนอื่น</p>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

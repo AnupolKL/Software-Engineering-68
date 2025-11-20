@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}เข้าสู่ระบบ | CUTCAMP{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto p-6 text-white bg-[#2a3731] rounded-xl">
+  <h1 class="text-2xl font-semibold mb-4">เข้าสู่ระบบ</h1>
+
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <div>
+      <label class="block text-sm">ชื่อผู้ใช้</label>
+      {{ form.username }}
+      {% for e in form.username.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <div>
+      <label class="block text-sm">รหัสผ่าน</label>
+      {{ form.password }}
+      {% for e in form.password.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+    </div>
+
+    <button class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">เข้าสู่ระบบ</button>
+    <p class="text-sm mt-2">
+      ยังไม่มีบัญชี?
+      <a class="text-blue-600" href="{% url 'register' %}">สมัครสมาชิก</a>
+    </p>
+  </form>
+</div>
+{% endblock %}

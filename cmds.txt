@@ -1,0 +1,16 @@
+รัน 2 Terminal
+
+# Terminal 1
+python manage.py runserver
+
+# Terminal 2
+npm run tw:dev
+
+
+.venv\scripts\activate
+
+ดู pip install ที่ติดตั้งไปแล้ว ใช้ pip list
+
+บันทึกข้อมูล database ทั้งหมดเก็บไว้ใน data.json
+py manage.py dumpdata --indent 2 > data.json
+
