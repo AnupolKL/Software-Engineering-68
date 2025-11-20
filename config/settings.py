@@ -15,13 +15,12 @@ import os
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-GEMINI_API_KEY = os.getenv("AIzaSyBAqgNtuxVhvbcvJ2skLUS8lny411cL8xI")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-HAIR_AI_API_URL = os.getenv("HF_FACE_API_URL", "")
-HAIR_AI_API_KEY = os.getenv("HF_FACE_API_TOKEN", "")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"

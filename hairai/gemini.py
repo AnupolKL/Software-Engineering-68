@@ -17,7 +17,7 @@ def analyze_face_shape_with_gemini(image_file):
     # ตั้งค่า API Key
     genai.configure(api_key=settings.GEMINI_API_KEY)
 
-    model = genai.GenerativeModel("gemini-1.5-flash-latest")
+    model = genai.GenerativeModel("models/gemini-2.5-flash-image")
 
     # อ่าน bytes จากไฟล์
     image_bytes = image_file.read()
@@ -49,7 +49,7 @@ def analyze_face_shape_with_gemini(image_file):
     )
 
     text = (result.text or "").strip()
-    print("DEBUG GEMINI RAW:", text)  # 👈 ต้องเห็นบรรทัดนี้ใน terminal
+    print("DEBUG GEMINI RAW:", text)  #
     logger.debug("Gemini raw response: %s", text)
 
     # เผื่อ Gemini ใส่ ```json ... ```
