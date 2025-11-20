@@ -376,6 +376,42 @@
   }
 },
 {
+  "model": "auth.permission",
+  "pk": 37,
+  "fields": {
+    "name": "Can add review",
+    "content_type": 10,
+    "codename": "add_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 38,
+  "fields": {
+    "name": "Can change review",
+    "content_type": 10,
+    "codename": "change_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 39,
+  "fields": {
+    "name": "Can delete review",
+    "content_type": 10,
+    "codename": "delete_review"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 40,
+  "fields": {
+    "name": "Can view review",
+    "content_type": 10,
+    "codename": "view_review"
+  }
+},
+{
   "model": "contenttypes.contenttype",
   "pk": 1,
   "fields": {
@@ -448,6 +484,14 @@
   }
 },
 {
+  "model": "contenttypes.contenttype",
+  "pk": 10,
+  "fields": {
+    "app_label": "reviews",
+    "model": "review"
+  }
+},
+{
   "model": "sessions.session",
   "pk": "2db62vae207tgl8x5d3l0yl0lsbtkm4v",
   "fields": {
@@ -497,10 +541,10 @@
 },
 {
   "model": "sessions.session",
-  "pk": "xc3wn9bns3nuld41btqkyjz262oe9p07",
+  "pk": "y1ybo7y8mr0hklqh0fpvra3fk6aj4lh7",
   "fields": {
-    "session_data": ".eJxVjMsOwiAUBf-FtSFQaKUu3fsN5HIfUjWQlHZl_HfbpAvdnpk5bxVhXXJcG89xInVRTp1-twT45LIDekC5V421LPOU9K7ogzZ9q8Sv6-H-HWRoeauRzDl57m1nQYjJ4QACCJ4cW0ywERe8jIJJOotgmMCh6b0MI4Ug6vMFLbY5zQ:1vLYxZ:pWuXfVxlUkbbkVNJe3Q_pbWFnwUB4wKQuV89D2p4s_s",
-    "expire_date": "2025-12-03T03:34:21.785Z"
+    "session_data": ".eJxVjEEOgjAQRe_StWmYljLBpXvP0PzptIIaSCisjHdXEha6_e-9_zIR2zrEreYljmrOxpnT7yZIjzztQO-YbrNN87Quo9hdsQet9jprfl4O9-9gQB2-dYYjhsIjELgXTX1gyr7XQoHYoRUKXeO1ocJtSRrgC6QrDbsAYfP-APOSOEg:1vM02s:CryRkCUWXH_8BlPu2RWUWrLp6kU7Gym0urDiFKrrUmQ",
+    "expire_date": "2025-12-04T08:29:38.082Z"
   }
 },
 {
@@ -508,7 +552,7 @@
   "pk": 2,
   "fields": {
     "password": "pbkdf2_sha256$1000000$yNWSDtB7Xcb1cpq24tuXoN$x8R2h7Pm4JahrzPt14zSM4fSph4pYagklJetMabfovM=",
-    "last_login": "2025-11-17T14:28:10.589Z",
+    "last_login": "2025-11-20T08:29:38.080Z",
     "is_superuser": true,
     "username": "anupol",
     "first_name": "",
@@ -528,7 +572,7 @@
   "pk": 3,
   "fields": {
     "password": "pbkdf2_sha256$1000000$O7xb8qBAxmVHzoT0jrOI3i$ac1RT/RwZuNQyFLkBOX7U8DYnk+lugtRjZA+vMJUeek=",
-    "last_login": "2025-11-19T03:34:21.784Z",
+    "last_login": "2025-11-20T08:29:31.737Z",
     "is_superuser": false,
     "username": "Test1",
     "first_name": "",
@@ -1055,7 +1099,7 @@
     "start_at": "2025-11-19T03:00:00Z",
     "end_at": "2025-11-19T05:00:00Z",
     "source": "online",
-    "status": "confirmed",
+    "status": "completed",
     "notes": "",
     "created_at": "2025-11-18T16:16:24.068Z"
   }
@@ -1085,7 +1129,7 @@
     "start_at": "2025-11-19T07:40:00Z",
     "end_at": "2025-11-19T08:30:00Z",
     "source": "online",
-    "status": "confirmed",
+    "status": "completed",
     "notes": "",
     "created_at": "2025-11-18T16:22:17.839Z"
   }
@@ -1100,9 +1144,69 @@
     "start_at": "2025-11-20T05:40:00Z",
     "end_at": "2025-11-20T08:00:00Z",
     "source": "online",
-    "status": "confirmed",
+    "status": "completed",
     "notes": "",
     "created_at": "2025-11-19T03:48:23.331Z"
+  }
+},
+{
+  "model": "bookings.booking",
+  "pk": 34,
+  "fields": {
+    "customer": 2,
+    "barber": 7,
+    "service": 11,
+    "start_at": "2025-11-20T05:40:00Z",
+    "end_at": "2025-11-20T08:00:00Z",
+    "source": "online",
+    "status": "canceled",
+    "notes": "",
+    "created_at": "2025-11-19T12:38:02.064Z"
+  }
+},
+{
+  "model": "bookings.booking",
+  "pk": 35,
+  "fields": {
+    "customer": 2,
+    "barber": 7,
+    "service": 14,
+    "start_at": "2025-11-20T03:00:00Z",
+    "end_at": "2025-11-20T04:00:00Z",
+    "source": "online",
+    "status": "completed",
+    "notes": "",
+    "created_at": "2025-11-19T14:51:39.294Z"
+  }
+},
+{
+  "model": "bookings.booking",
+  "pk": 36,
+  "fields": {
+    "customer": 2,
+    "barber": 6,
+    "service": 9,
+    "start_at": "2025-11-20T08:50:00Z",
+    "end_at": "2025-11-20T09:40:00Z",
+    "source": "online",
+    "status": "confirmed",
+    "notes": "",
+    "created_at": "2025-11-19T14:51:52.085Z"
+  }
+},
+{
+  "model": "bookings.booking",
+  "pk": 37,
+  "fields": {
+    "customer": 2,
+    "barber": 6,
+    "service": 13,
+    "start_at": "2025-11-21T04:20:00Z",
+    "end_at": "2025-11-21T05:20:00Z",
+    "source": "online",
+    "status": "confirmed",
+    "notes": "",
+    "created_at": "2025-11-20T08:36:09.875Z"
   }
 },
 {
@@ -1145,6 +1249,188 @@
     "quantity": 1,
     "added_by": 2,
     "added_at": "2025-11-16T15:41:35.396Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 1,
+  "fields": {
+    "customer": 2,
+    "service": 9,
+    "booking": 32,
+    "rating": 5,
+    "comment": "ตัดสวยมาก",
+    "created_at": "2025-11-19T12:49:00.065Z",
+    "updated_at": "2025-11-19T12:49:00.065Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 2,
+  "fields": {
+    "customer": 2,
+    "service": 12,
+    "booking": null,
+    "rating": 5,
+    "comment": "",
+    "created_at": "2025-11-19T14:06:18.869Z",
+    "updated_at": "2025-11-19T14:06:18.869Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 3,
+  "fields": {
+    "customer": 2,
+    "service": 9,
+    "booking": null,
+    "rating": 2,
+    "comment": "",
+    "created_at": "2025-11-19T14:20:23.286Z",
+    "updated_at": "2025-11-19T14:20:23.286Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 4,
+  "fields": {
+    "customer": 2,
+    "service": 10,
+    "booking": null,
+    "rating": 2,
+    "comment": "",
+    "created_at": "2025-11-19T14:20:29.243Z",
+    "updated_at": "2025-11-19T14:20:29.243Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 5,
+  "fields": {
+    "customer": 2,
+    "service": 12,
+    "booking": null,
+    "rating": 4,
+    "comment": "",
+    "created_at": "2025-11-19T14:30:07.220Z",
+    "updated_at": "2025-11-19T14:30:07.220Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 6,
+  "fields": {
+    "customer": 2,
+    "service": 9,
+    "booking": null,
+    "rating": 5,
+    "comment": "",
+    "created_at": "2025-11-19T14:30:27.834Z",
+    "updated_at": "2025-11-19T14:30:27.834Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 7,
+  "fields": {
+    "customer": 2,
+    "service": 10,
+    "booking": 30,
+    "rating": 3,
+    "comment": "ตัดดี",
+    "created_at": "2025-11-19T14:45:10.099Z",
+    "updated_at": "2025-11-19T14:45:10.099Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 8,
+  "fields": {
+    "customer": 2,
+    "service": 13,
+    "booking": 26,
+    "rating": 3,
+    "comment": "คุยสนุก",
+    "created_at": "2025-11-19T14:45:31.297Z",
+    "updated_at": "2025-11-19T14:45:31.297Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 9,
+  "fields": {
+    "customer": 3,
+    "service": 10,
+    "booking": null,
+    "rating": 4,
+    "comment": "ทำสวยมากครับ",
+    "created_at": "2025-11-19T14:50:07.970Z",
+    "updated_at": "2025-11-19T14:50:07.970Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 10,
+  "fields": {
+    "customer": 3,
+    "service": 10,
+    "booking": null,
+    "rating": 3,
+    "comment": "",
+    "created_at": "2025-11-19T15:57:20.747Z",
+    "updated_at": "2025-11-19T15:57:20.747Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 11,
+  "fields": {
+    "customer": 3,
+    "service": 9,
+    "booking": null,
+    "rating": 5,
+    "comment": "",
+    "created_at": "2025-11-19T15:57:24.344Z",
+    "updated_at": "2025-11-19T15:57:24.344Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 12,
+  "fields": {
+    "customer": 2,
+    "service": 14,
+    "booking": null,
+    "rating": 5,
+    "comment": "",
+    "created_at": "2025-11-19T15:57:55.512Z",
+    "updated_at": "2025-11-19T15:57:55.512Z",
+    "is_public": true
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 13,
+  "fields": {
+    "customer": 2,
+    "service": 14,
+    "booking": 35,
+    "rating": 4,
+    "comment": "ดี",
+    "created_at": "2025-11-20T08:39:30.398Z",
+    "updated_at": "2025-11-20T08:39:30.398Z",
+    "is_public": true
   }
 }
 ]
