@@ -1,15 +1,20 @@
 # Environment
 .env
+.env.local
+.env.*.local
 .venv
 env/
 venv/
-
-# Node
-node_modules/
-package-lock.json
+ENV/
+env.bak/
+venv.bak/
+*.pem
 
 # Python
 __pycache__/
+*.py[cod]
+*$py.class
+*.so
 *.pyc
 *.pyo
 *.egg-info/
@@ -17,23 +22,61 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+.installed.cfg
+*.egg
+MANIFEST
 
-# IDE
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media
+/staticfiles
+
+# Node.js / Tailwind / npm
+node_modules/
+npm-debug.log
+yarn-error.log
+.npm
+package-lock.json
+
+# Tailwind
+dist/
+.next/
+
+# IDE / Editor
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+*.sublime-project
+*.sublime-workspace
+*.bak
+*.tmp
 
-# Database
-db.sqlite3
-*.sqlite3
+# OS
+Thumbs.db
+.DS_Store
 
-# Media & Static (if user uploads)
-media/
-staticfiles/
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
 
-# Miscellaneous
+# Project specific
 3.8
 data.json
 cmds.txt
-.DS_Store
