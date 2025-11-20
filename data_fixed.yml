@@ -1,0 +1,1074 @@
+- model: admin.logentry
+  pk: 1
+  fields:
+    action_time: '2025-09-13T19:37:34.801Z'
+    user: 2
+    content_type: 7
+    object_id: '1'
+    object_repr: ตัดผมชาย
+    action_flag: 1
+    change_message: '[{"added": {}}]'
+- model: admin.logentry
+  pk: 2
+  fields:
+    action_time: '2025-09-14T18:08:51.246Z'
+    user: 2
+    content_type: 6
+    object_id: '4'
+    object_repr: barber1
+    action_flag: 3
+    change_message: ''
+- model: admin.logentry
+  pk: 3
+  fields:
+    action_time: '2025-09-14T18:08:55.792Z'
+    user: 2
+    content_type: 6
+    object_id: '5'
+    object_repr: barber2
+    action_flag: 3
+    change_message: ''
+- model: admin.logentry
+  pk: 4
+  fields:
+    action_time: '2025-09-28T13:46:52.880Z'
+    user: 2
+    content_type: 6
+    object_id: '3'
+    object_repr: Test1
+    action_flag: 2
+    change_message: '[{"changed": {"fields": ["password"]}}]'
+- model: auth.permission
+  pk: 1
+  fields:
+    name: Can add log entry
+    content_type: 1
+    codename: add_logentry
+- model: auth.permission
+  pk: 2
+  fields:
+    name: Can change log entry
+    content_type: 1
+    codename: change_logentry
+- model: auth.permission
+  pk: 3
+  fields:
+    name: Can delete log entry
+    content_type: 1
+    codename: delete_logentry
+- model: auth.permission
+  pk: 4
+  fields:
+    name: Can view log entry
+    content_type: 1
+    codename: view_logentry
+- model: auth.permission
+  pk: 5
+  fields:
+    name: Can add permission
+    content_type: 2
+    codename: add_permission
+- model: auth.permission
+  pk: 6
+  fields:
+    name: Can change permission
+    content_type: 2
+    codename: change_permission
+- model: auth.permission
+  pk: 7
+  fields:
+    name: Can delete permission
+    content_type: 2
+    codename: delete_permission
+- model: auth.permission
+  pk: 8
+  fields:
+    name: Can view permission
+    content_type: 2
+    codename: view_permission
+- model: auth.permission
+  pk: 9
+  fields:
+    name: Can add group
+    content_type: 3
+    codename: add_group
+- model: auth.permission
+  pk: 10
+  fields:
+    name: Can change group
+    content_type: 3
+    codename: change_group
+- model: auth.permission
+  pk: 11
+  fields:
+    name: Can delete group
+    content_type: 3
+    codename: delete_group
+- model: auth.permission
+  pk: 12
+  fields:
+    name: Can view group
+    content_type: 3
+    codename: view_group
+- model: auth.permission
+  pk: 13
+  fields:
+    name: Can add content type
+    content_type: 4
+    codename: add_contenttype
+- model: auth.permission
+  pk: 14
+  fields:
+    name: Can change content type
+    content_type: 4
+    codename: change_contenttype
+- model: auth.permission
+  pk: 15
+  fields:
+    name: Can delete content type
+    content_type: 4
+    codename: delete_contenttype
+- model: auth.permission
+  pk: 16
+  fields:
+    name: Can view content type
+    content_type: 4
+    codename: view_contenttype
+- model: auth.permission
+  pk: 17
+  fields:
+    name: Can add session
+    content_type: 5
+    codename: add_session
+- model: auth.permission
+  pk: 18
+  fields:
+    name: Can change session
+    content_type: 5
+    codename: change_session
+- model: auth.permission
+  pk: 19
+  fields:
+    name: Can delete session
+    content_type: 5
+    codename: delete_session
+- model: auth.permission
+  pk: 20
+  fields:
+    name: Can view session
+    content_type: 5
+    codename: view_session
+- model: auth.permission
+  pk: 21
+  fields:
+    name: Can add user
+    content_type: 6
+    codename: add_user
+- model: auth.permission
+  pk: 22
+  fields:
+    name: Can change user
+    content_type: 6
+    codename: change_user
+- model: auth.permission
+  pk: 23
+  fields:
+    name: Can delete user
+    content_type: 6
+    codename: delete_user
+- model: auth.permission
+  pk: 24
+  fields:
+    name: Can view user
+    content_type: 6
+    codename: view_user
+- model: auth.permission
+  pk: 25
+  fields:
+    name: Can add service
+    content_type: 7
+    codename: add_service
+- model: auth.permission
+  pk: 26
+  fields:
+    name: Can change service
+    content_type: 7
+    codename: change_service
+- model: auth.permission
+  pk: 27
+  fields:
+    name: Can delete service
+    content_type: 7
+    codename: delete_service
+- model: auth.permission
+  pk: 28
+  fields:
+    name: Can view service
+    content_type: 7
+    codename: view_service
+- model: auth.permission
+  pk: 29
+  fields:
+    name: Can add booking
+    content_type: 8
+    codename: add_booking
+- model: auth.permission
+  pk: 30
+  fields:
+    name: Can change booking
+    content_type: 8
+    codename: change_booking
+- model: auth.permission
+  pk: 31
+  fields:
+    name: Can delete booking
+    content_type: 8
+    codename: delete_booking
+- model: auth.permission
+  pk: 32
+  fields:
+    name: Can view booking
+    content_type: 8
+    codename: view_booking
+- model: auth.permission
+  pk: 33
+  fields:
+    name: Can add booking addon
+    content_type: 9
+    codename: add_bookingaddon
+- model: auth.permission
+  pk: 34
+  fields:
+    name: Can change booking addon
+    content_type: 9
+    codename: change_bookingaddon
+- model: auth.permission
+  pk: 35
+  fields:
+    name: Can delete booking addon
+    content_type: 9
+    codename: delete_bookingaddon
+- model: auth.permission
+  pk: 36
+  fields:
+    name: Can view booking addon
+    content_type: 9
+    codename: view_bookingaddon
+- model: auth.permission
+  pk: 37
+  fields:
+    name: Can add review
+    content_type: 10
+    codename: add_review
+- model: auth.permission
+  pk: 38
+  fields:
+    name: Can change review
+    content_type: 10
+    codename: change_review
+- model: auth.permission
+  pk: 39
+  fields:
+    name: Can delete review
+    content_type: 10
+    codename: delete_review
+- model: auth.permission
+  pk: 40
+  fields:
+    name: Can view review
+    content_type: 10
+    codename: view_review
+- model: contenttypes.contenttype
+  pk: 1
+  fields:
+    app_label: admin
+    model: logentry
+- model: contenttypes.contenttype
+  pk: 2
+  fields:
+    app_label: auth
+    model: permission
+- model: contenttypes.contenttype
+  pk: 3
+  fields:
+    app_label: auth
+    model: group
+- model: contenttypes.contenttype
+  pk: 4
+  fields:
+    app_label: contenttypes
+    model: contenttype
+- model: contenttypes.contenttype
+  pk: 5
+  fields:
+    app_label: sessions
+    model: session
+- model: contenttypes.contenttype
+  pk: 6
+  fields:
+    app_label: accounts
+    model: user
+- model: contenttypes.contenttype
+  pk: 7
+  fields:
+    app_label: services
+    model: service
+- model: contenttypes.contenttype
+  pk: 8
+  fields:
+    app_label: bookings
+    model: booking
+- model: contenttypes.contenttype
+  pk: 9
+  fields:
+    app_label: bookings
+    model: bookingaddon
+- model: contenttypes.contenttype
+  pk: 10
+  fields:
+    app_label: reviews
+    model: review
+- model: sessions.session
+  pk: 2db62vae207tgl8x5d3l0yl0lsbtkm4v
+  fields:
+    session_data: .eJxVjEEOgjAQRe_StWmYljLBpXvP0PzptIIaSCisjHdXEha6_e-9_zIR2zrEreYljmrOxpnT7yZIjzztQO-YbrNN87Quo9hdsQet9jprfl4O9-9gQB2-dYYjhsIjELgXTX1gyr7XQoHYoRUKXeO1ocJtSRrgC6QrDbsAYfP-APOSOEg:1uxtNy:yZp8eFQg8igXOXcQcLYFDPyHFEw4OtmfYdJXsgR4g0c
+    expire_date: '2025-09-28T20:31:46.328Z'
+- model: sessions.session
+  pk: 4kmaiiosxpuomdssa1jzmxsk8jyaa2jd
+  fields:
+    session_data: .eJxVjEEOgjAQRe_StWmYljLBpXvP0PzptIIaSCisjHdXEha6_e-9_zIR2zrEreYljmrOxpnT7yZIjzztQO-YbrNN87Quo9hdsQet9jprfl4O9-9gQB2-dYYjhsIjELgXTX1gyr7XQoHYoRUKXeO1ocJtSRrgC6QrDbsAYfP-APOSOEg:1v354b:TyRQCka1O3N78NbltpfhkbEK3K_JEgO4J_aVsUAlPl8
+    expire_date: '2025-10-13T04:01:13.050Z'
+- model: sessions.session
+  pk: 7d5tdie489sv13q1jiy0ifsl2c6qx9j8
+  fields:
+    session_data: .eJxVjEEOgjAQRe_StWmYljLBpXvP0PzptIIaSCisjHdXEha6_e-9_zIR2zrEreYljmrOxpnT7yZIjzztQO-YbrNN87Quo9hdsQet9jprfl4O9-9gQB2-dYYjhsIjELgXTX1gyr7XQoHYoRUKXeO1ocJtSRrgC6QrDbsAYfP-APOSOEg:1uzESY:zcGcPwRz4GuawhYB_t6f93IM0HoRGtcWP7BQgO42zZg
+    expire_date: '2025-10-02T13:14:02.477Z'
+- model: sessions.session
+  pk: cecta2fraza55k6g89otnpauge8km01r
+  fields:
+    session_data: .eJxVjEEOgjAQRe_StWmYljLBpXvP0PzptIIaSCisjHdXEha6_e-9_zIR2zrEreYljmrOxpnT7yZIjzztQO-YbrNN87Quo9hdsQet9jprfl4O9-9gQB2-dYYjhsIjELgXTX1gyr7XQoHYoRUKXeO1ocJtSRrgC6QrDbsAYfP-APOSOEg:1vAptf:RfYyWLvGHIrmvtK0OIoT_OMliJEmeyaEGNKeOey7oQU
+    expire_date: '2025-11-03T13:25:59.587Z'
+- model: sessions.session
+  pk: gwamnqp83jumd3opwebjwicrx2yl7vg4
+  fields:
+    session_data: .eJxVjEEOgjAQRe_StWmYljLBpXvP0PzptIIaSCisjHdXEha6_e-9_zIR2zrEreYljmrOxpnT7yZIjzztQO-YbrNN87Quo9hdsQet9jprfl4O9-9gQB2-dYYjhsIjELgXTX1gyr7XQoHYoRUKXeO1ocJtSRrgC6QrDbsAYfP-APOSOEg:1uyo0C:m2k-oei269pL8f-4bVopJVEmpwTdCJNkNfOMwfjlal8
+    expire_date: '2025-10-01T08:59:00.151Z'
+- model: sessions.session
+  pk: lfiw7w60m51mcm89f0ejrdc3bf5cgn2m
+  fields:
+    session_data: .eJxVjEEOgjAQRe_StWmYljLBpXvP0PzptIIaSCisjHdXEha6_e-9_zIR2zrEreYljmrOxpnT7yZIjzztQO-YbrNN87Quo9hdsQet9jprfl4O9-9gQB2-dYYjhsIjELgXTX1gyr7XQoHYoRUKXeO1ocJtSRrgC6QrDbsAYfP-APOSOEg:1vAY4A:caYMwp02OJWgibil15NlJlaxRmneHN2maNDdD1B7DrI
+    expire_date: '2025-11-02T18:23:38.323Z'
+- model: sessions.session
+  pk: y1ybo7y8mr0hklqh0fpvra3fk6aj4lh7
+  fields:
+    session_data: .eJxVjEEOgjAQRe_StWmYljLBpXvP0PzptIIaSCisjHdXEha6_e-9_zIR2zrEreYljmrOxpnT7yZIjzztQO-YbrNN87Quo9hdsQet9jprfl4O9-9gQB2-dYYjhsIjELgXTX1gyr7XQoHYoRUKXeO1ocJtSRrgC6QrDbsAYfP-APOSOEg:1vM02s:CryRkCUWXH_8BlPu2RWUWrLp6kU7Gym0urDiFKrrUmQ
+    expire_date: '2025-12-04T08:29:38.082Z'
+- model: accounts.user
+  pk: 2
+  fields:
+    password: pbkdf2_sha256$1000000$yNWSDtB7Xcb1cpq24tuXoN$x8R2h7Pm4JahrzPt14zSM4fSph4pYagklJetMabfovM=
+    last_login: '2025-11-20T08:29:38.080Z'
+    is_superuser: true
+    username: anupol
+    first_name: ''
+    last_name: ''
+    email: anupol@gmail.com
+    is_staff: true
+    is_active: true
+    date_joined: '2025-09-13T19:37:09.739Z'
+    is_barber: false
+    avatar: ''
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 3
+  fields:
+    password: pbkdf2_sha256$1000000$O7xb8qBAxmVHzoT0jrOI3i$ac1RT/RwZuNQyFLkBOX7U8DYnk+lugtRjZA+vMJUeek=
+    last_login: '2025-11-20T08:29:31.737Z'
+    is_superuser: false
+    username: Test1
+    first_name: ''
+    last_name: ''
+    email: test1@gmail.com
+    is_staff: false
+    is_active: true
+    date_joined: '2025-09-13T20:34:24.770Z'
+    is_barber: false
+    avatar: ''
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 6
+  fields:
+    password: ''
+    last_login: null
+    is_superuser: false
+    username: Jimme
+    first_name: ''
+    last_name: ''
+    email: Jimme@gmail.com
+    is_staff: false
+    is_active: true
+    date_joined: '2025-09-14T18:09:20.504Z'
+    is_barber: true
+    avatar: barbers/สกรนชอต_2025-09-15_032037.png
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 7
+  fields:
+    password: ''
+    last_login: null
+    is_superuser: false
+    username: Sofia
+    first_name: ''
+    last_name: ''
+    email: Sofia@gmail.com
+    is_staff: false
+    is_active: true
+    date_joined: '2025-09-14T18:10:43.948Z'
+    is_barber: true
+    avatar: barbers/สกรนชอต_2025-09-15_032044.png
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 8
+  fields:
+    password: ''
+    last_login: null
+    is_superuser: false
+    username: Bruno
+    first_name: ''
+    last_name: ''
+    email: Bruno@gmail.com
+    is_staff: false
+    is_active: true
+    date_joined: '2025-09-14T20:21:49.999Z'
+    is_barber: true
+    avatar: barbers/สกรนชอต_2025-09-15_032048.png
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 9
+  fields:
+    password: pbkdf2_sha256$1000000$g28To64ZLJEly0UTW61K88$XSRun3V1CwrqOVaGjr+gyzaGT600FebAwaa/47YlB5c=
+    last_login: null
+    is_superuser: true
+    username: admin
+    first_name: ''
+    last_name: ''
+    email: admin@gmail.com
+    is_staff: true
+    is_active: true
+    date_joined: '2025-09-15T09:36:17.194Z'
+    is_barber: false
+    avatar: ''
+    groups: []
+    user_permissions: []
+- model: accounts.user
+  pk: 10
+  fields:
+    password: pbkdf2_sha256$1000000$sfXQeGlmjVlCgeXE85ZxIu$5MyU7RuWcARk16chIMxYKbO4fo18/vB0pkhanS81ABc=
+    last_login: '2025-09-18T11:45:50.869Z'
+    is_superuser: false
+    username: Test10
+    first_name: ''
+    last_name: ''
+    email: test10@gmail.com
+    is_staff: false
+    is_active: true
+    date_joined: '2025-09-18T11:45:38.105Z'
+    is_barber: false
+    avatar: ''
+    groups: []
+    user_permissions: []
+- model: services.service
+  pk: 9
+  fields:
+    name: ตัดผม
+    description: ตัดผม
+    duration_min: 50
+    price: '120.00'
+    is_active: true
+    image: services/สกรนชอต_2025-09-14_231937.png
+- model: services.service
+  pk: 10
+  fields:
+    name: ต่อผม
+    description: บริการต่อผม
+    duration_min: 120
+    price: '900.00'
+    is_active: true
+    image: services/สกรนชอต_2025-09-14_231934.png
+- model: services.service
+  pk: 11
+  fields:
+    name: ยืดผม
+    description: บริการสำหรับยืดผม
+    duration_min: 140
+    price: '1000.00'
+    is_active: true
+    image: services/สกรนชอต_2025-09-14_231930.png
+- model: services.service
+  pk: 12
+  fields:
+    name: แว็กซ์และการกำจัดขน
+    description: บริการสำหรับแว็กซ์และการกำจัดขน
+    duration_min: 30
+    price: '250.00'
+    is_active: true
+    image: services/สกรนชอต_2025-09-14_231925.png
+- model: services.service
+  pk: 13
+  fields:
+    name: ย้อมผม
+    description: บริการย้อมผม
+    duration_min: 60
+    price: '600.00'
+    is_active: true
+    image: services/สกรนชอต_2025-09-14_231917.png
+- model: services.service
+  pk: 14
+  fields:
+    name: สระผม
+    description: บริการสระผม
+    duration_min: 60
+    price: '140.00'
+    is_active: true
+    image: services/สกรนชอต_2025-09-14_231912.png
+- model: bookings.booking
+  pk: 8
+  fields:
+    customer: 2
+    barber: 6
+    service: 12
+    start_at: '2025-09-28T05:30:00Z'
+    end_at: '2025-09-28T06:00:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-09-27T09:11:43.114Z'
+- model: bookings.booking
+  pk: 9
+  fields:
+    customer: 2
+    barber: 6
+    service: 11
+    start_at: '2025-09-29T05:40:00Z'
+    end_at: '2025-09-29T08:00:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-09-28T13:22:15.479Z'
+- model: bookings.booking
+  pk: 10
+  fields:
+    customer: 2
+    barber: 6
+    service: 11
+    start_at: '2025-09-29T05:40:00Z'
+    end_at: '2025-09-29T08:00:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-09-28T13:32:42.673Z'
+- model: bookings.booking
+  pk: 11
+  fields:
+    customer: 2
+    barber: 6
+    service: 11
+    start_at: '2025-09-29T03:00:00Z'
+    end_at: '2025-09-29T05:20:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-09-28T13:33:08.015Z'
+- model: bookings.booking
+  pk: 12
+  fields:
+    customer: 2
+    barber: 6
+    service: 13
+    start_at: '2025-09-29T08:20:00Z'
+    end_at: '2025-09-29T09:20:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-09-28T13:36:00.028Z'
+- model: bookings.booking
+  pk: 13
+  fields:
+    customer: 2
+    barber: 8
+    service: 10
+    start_at: '2025-09-29T03:00:00Z'
+    end_at: '2025-09-29T05:00:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-09-28T13:39:56.586Z'
+- model: bookings.booking
+  pk: 14
+  fields:
+    customer: 2
+    barber: 6
+    service: 11
+    start_at: '2025-09-30T05:40:00Z'
+    end_at: '2025-09-30T08:00:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-09-28T13:40:21.801Z'
+- model: bookings.booking
+  pk: 15
+  fields:
+    customer: 3
+    barber: 6
+    service: 11
+    start_at: '2025-09-30T08:20:00Z'
+    end_at: '2025-09-30T10:40:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-09-28T13:47:51.905Z'
+- model: bookings.booking
+  pk: 16
+  fields:
+    customer: 3
+    barber: 7
+    service: 14
+    start_at: '2025-09-29T08:20:00Z'
+    end_at: '2025-09-29T09:20:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-09-28T13:48:09.787Z'
+- model: bookings.booking
+  pk: 17
+  fields:
+    customer: 2
+    barber: 7
+    service: 13
+    start_at: '2025-09-29T04:20:00Z'
+    end_at: '2025-09-29T05:20:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-09-28T14:42:07.458Z'
+- model: bookings.booking
+  pk: 18
+  fields:
+    customer: 2
+    barber: 8
+    service: 9
+    start_at: '2025-09-30T07:40:00Z'
+    end_at: '2025-09-30T08:30:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-09-29T03:57:41.585Z'
+- model: bookings.booking
+  pk: 19
+  fields:
+    customer: 2
+    barber: 6
+    service: 11
+    start_at: '2025-10-21T08:20:00Z'
+    end_at: '2025-10-21T11:10:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-10-19T18:25:04.147Z'
+- model: bookings.booking
+  pk: 20
+  fields:
+    customer: null
+    barber: 6
+    service: 10
+    start_at: '2025-10-20T13:31:00Z'
+    end_at: '2025-10-20T15:31:00Z'
+    source: walkin
+    status: canceled
+    notes: ''
+    created_at: '2025-10-20T13:31:48.563Z'
+- model: bookings.booking
+  pk: 21
+  fields:
+    customer: 2
+    barber: 6
+    service: 13
+    start_at: '2025-10-22T03:00:00Z'
+    end_at: '2025-10-22T04:00:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-10-20T13:46:29.650Z'
+- model: bookings.booking
+  pk: 22
+  fields:
+    customer: 2
+    barber: 6
+    service: 13
+    start_at: '2025-10-23T07:00:00Z'
+    end_at: '2025-10-23T08:30:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-10-20T14:01:29.353Z'
+- model: bookings.booking
+  pk: 23
+  fields:
+    customer: 2
+    barber: 6
+    service: 11
+    start_at: '2025-11-15T03:00:00Z'
+    end_at: '2025-11-15T05:20:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-11-14T09:24:12.143Z'
+- model: bookings.booking
+  pk: 24
+  fields:
+    customer: 2
+    barber: 7
+    service: 11
+    start_at: '2025-11-17T05:40:00Z'
+    end_at: '2025-11-17T08:00:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-11-16T15:37:07.394Z'
+- model: bookings.booking
+  pk: 25
+  fields:
+    customer: 2
+    barber: 7
+    service: 11
+    start_at: '2025-11-17T05:40:00Z'
+    end_at: '2025-11-17T08:30:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-11-16T15:41:26.690Z'
+- model: bookings.booking
+  pk: 26
+  fields:
+    customer: 2
+    barber: 8
+    service: 13
+    start_at: '2025-11-18T08:20:00Z'
+    end_at: '2025-11-18T09:20:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-11-17T15:54:40.981Z'
+- model: bookings.booking
+  pk: 27
+  fields:
+    customer: 2
+    barber: 6
+    service: 9
+    start_at: '2025-11-19T03:50:00Z'
+    end_at: '2025-11-19T04:40:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-11-18T15:09:32.690Z'
+- model: bookings.booking
+  pk: 28
+  fields:
+    customer: 2
+    barber: 6
+    service: 11
+    start_at: '2025-11-19T08:20:00Z'
+    end_at: '2025-11-19T10:40:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-11-18T16:00:17.282Z'
+- model: bookings.booking
+  pk: 29
+  fields:
+    customer: 2
+    barber: 8
+    service: 10
+    start_at: '2025-11-20T03:00:00Z'
+    end_at: '2025-11-20T05:00:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-11-18T16:02:47.848Z'
+- model: bookings.booking
+  pk: 30
+  fields:
+    customer: 2
+    barber: 7
+    service: 10
+    start_at: '2025-11-19T03:00:00Z'
+    end_at: '2025-11-19T05:00:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-11-18T16:16:24.068Z'
+- model: bookings.booking
+  pk: 31
+  fields:
+    customer: 2
+    barber: 7
+    service: 11
+    start_at: '2025-11-20T03:00:00Z'
+    end_at: '2025-11-20T05:20:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-11-18T16:22:02.473Z'
+- model: bookings.booking
+  pk: 32
+  fields:
+    customer: 2
+    barber: 6
+    service: 9
+    start_at: '2025-11-19T07:40:00Z'
+    end_at: '2025-11-19T08:30:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-11-18T16:22:17.839Z'
+- model: bookings.booking
+  pk: 33
+  fields:
+    customer: 3
+    barber: 6
+    service: 11
+    start_at: '2025-11-20T05:40:00Z'
+    end_at: '2025-11-20T08:00:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-11-19T03:48:23.331Z'
+- model: bookings.booking
+  pk: 34
+  fields:
+    customer: 2
+    barber: 7
+    service: 11
+    start_at: '2025-11-20T05:40:00Z'
+    end_at: '2025-11-20T08:00:00Z'
+    source: online
+    status: canceled
+    notes: ''
+    created_at: '2025-11-19T12:38:02.064Z'
+- model: bookings.booking
+  pk: 35
+  fields:
+    customer: 2
+    barber: 7
+    service: 14
+    start_at: '2025-11-20T03:00:00Z'
+    end_at: '2025-11-20T04:00:00Z'
+    source: online
+    status: completed
+    notes: ''
+    created_at: '2025-11-19T14:51:39.294Z'
+- model: bookings.booking
+  pk: 36
+  fields:
+    customer: 2
+    barber: 6
+    service: 9
+    start_at: '2025-11-20T08:50:00Z'
+    end_at: '2025-11-20T09:40:00Z'
+    source: online
+    status: confirmed
+    notes: ''
+    created_at: '2025-11-19T14:51:52.085Z'
+- model: bookings.booking
+  pk: 37
+  fields:
+    customer: 2
+    barber: 6
+    service: 13
+    start_at: '2025-11-21T04:20:00Z'
+    end_at: '2025-11-21T05:20:00Z'
+    source: online
+    status: confirmed
+    notes: ''
+    created_at: '2025-11-20T08:36:09.875Z'
+- model: bookings.bookingaddon
+  pk: 4
+  fields:
+    booking: 19
+    service: 12
+    name: แว็กซ์และการกำจัดขน
+    price: '250.00'
+    duration_min: 30
+    quantity: 1
+    added_by: 2
+    added_at: '2025-10-20T13:38:57.312Z'
+- model: bookings.bookingaddon
+  pk: 6
+  fields:
+    booking: 22
+    service: 12
+    name: แว็กซ์และการกำจัดขน
+    price: '250.00'
+    duration_min: 30
+    quantity: 1
+    added_by: 2
+    added_at: '2025-10-20T14:02:34.861Z'
+- model: bookings.bookingaddon
+  pk: 7
+  fields:
+    booking: 25
+    service: 12
+    name: แว็กซ์และการกำจัดขน
+    price: '250.00'
+    duration_min: 30
+    quantity: 1
+    added_by: 2
+    added_at: '2025-11-16T15:41:35.396Z'
+- model: reviews.review
+  pk: 1
+  fields:
+    customer: 2
+    service: 9
+    booking: 32
+    rating: 5
+    comment: ตัดสวยมาก
+    created_at: '2025-11-19T12:49:00.065Z'
+    updated_at: '2025-11-19T12:49:00.065Z'
+    is_public: true
+- model: reviews.review
+  pk: 2
+  fields:
+    customer: 2
+    service: 12
+    booking: null
+    rating: 5
+    comment: ''
+    created_at: '2025-11-19T14:06:18.869Z'
+    updated_at: '2025-11-19T14:06:18.869Z'
+    is_public: true
+- model: reviews.review
+  pk: 3
+  fields:
+    customer: 2
+    service: 9
+    booking: null
+    rating: 2
+    comment: ''
+    created_at: '2025-11-19T14:20:23.286Z'
+    updated_at: '2025-11-19T14:20:23.286Z'
+    is_public: true
+- model: reviews.review
+  pk: 4
+  fields:
+    customer: 2
+    service: 10
+    booking: null
+    rating: 2
+    comment: ''
+    created_at: '2025-11-19T14:20:29.243Z'
+    updated_at: '2025-11-19T14:20:29.243Z'
+    is_public: true
+- model: reviews.review
+  pk: 5
+  fields:
+    customer: 2
+    service: 12
+    booking: null
+    rating: 4
+    comment: ''
+    created_at: '2025-11-19T14:30:07.220Z'
+    updated_at: '2025-11-19T14:30:07.220Z'
+    is_public: true
+- model: reviews.review
+  pk: 6
+  fields:
+    customer: 2
+    service: 9
+    booking: null
+    rating: 5
+    comment: ''
+    created_at: '2025-11-19T14:30:27.834Z'
+    updated_at: '2025-11-19T14:30:27.834Z'
+    is_public: true
+- model: reviews.review
+  pk: 7
+  fields:
+    customer: 2
+    service: 10
+    booking: 30
+    rating: 3
+    comment: ตัดดี
+    created_at: '2025-11-19T14:45:10.099Z'
+    updated_at: '2025-11-19T14:45:10.099Z'
+    is_public: true
+- model: reviews.review
+  pk: 8
+  fields:
+    customer: 2
+    service: 13
+    booking: 26
+    rating: 3
+    comment: คุยสนุก
+    created_at: '2025-11-19T14:45:31.297Z'
+    updated_at: '2025-11-19T14:45:31.297Z'
+    is_public: true
+- model: reviews.review
+  pk: 9
+  fields:
+    customer: 3
+    service: 10
+    booking: null
+    rating: 4
+    comment: ทำสวยมากครับ
+    created_at: '2025-11-19T14:50:07.970Z'
+    updated_at: '2025-11-19T14:50:07.970Z'
+    is_public: true
+- model: reviews.review
+  pk: 10
+  fields:
+    customer: 3
+    service: 10
+    booking: null
+    rating: 3
+    comment: ''
+    created_at: '2025-11-19T15:57:20.747Z'
+    updated_at: '2025-11-19T15:57:20.747Z'
+    is_public: true
+- model: reviews.review
+  pk: 11
+  fields:
+    customer: 3
+    service: 9
+    booking: null
+    rating: 5
+    comment: ''
+    created_at: '2025-11-19T15:57:24.344Z'
+    updated_at: '2025-11-19T15:57:24.344Z'
+    is_public: true
+- model: reviews.review
+  pk: 12
+  fields:
+    customer: 2
+    service: 14
+    booking: null
+    rating: 5
+    comment: ''
+    created_at: '2025-11-19T15:57:55.512Z'
+    updated_at: '2025-11-19T15:57:55.512Z'
+    is_public: true
+- model: reviews.review
+  pk: 13
+  fields:
+    customer: 2
+    service: 14
+    booking: 35
+    rating: 4
+    comment: ดี
+    created_at: '2025-11-20T08:39:30.398Z'
+    updated_at: '2025-11-20T08:39:30.398Z'
+    is_public: true

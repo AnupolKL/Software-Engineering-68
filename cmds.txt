@@ -14,3 +14,5 @@ npm run tw:dev
 บันทึกข้อมูล database ทั้งหมดเก็บไว้ใน data.json
 py manage.py dumpdata --indent 2 > data.json
 
+# รันไฟล์นี้เพื่อ encode ไฟล์ข้อมูลที่เพี้ยน
+python convert_to_utf8.py
