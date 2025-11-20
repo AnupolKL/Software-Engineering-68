@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}แนะนำทรงผมด้วย AI | CUTCAMP{% endblock %}
+
+{% block content %}
+<section class="max-w-4xl mx-auto p-6 space-y-6 bg-[#2a3731] rounded-xl text-white">
+
+  <h1 class="text-2xl font-bold">AI แนะนำทรงผมที่เหมาะกับคุณ</h1>
+  <p class="text-sm text-gray-300">
+    อัปโหลดรูปใบหน้าของคุณ เพื่อให้ระบบช่วยวิเคราะห์รูปหน้าและแนะนำทรงผมที่เหมาะสม
+  </p>
+
+  <!-- ฟอร์มอัปโหลดรูป -->
+  <div class="bg-white rounded-2xl p-4 text-black">
+    <form method="post" enctype="multipart/form-data" class="space-y-4">
+      {% csrf_token %}
+      <div>
+        {{ form.image.label_tag }}
+        {{ form.image }}
+        {% for e in form.image.errors %}
+          <p class="text-rose-500 text-xs">{{ e }}</p>
+        {% endfor %}
+      </div>
+      <button class="text-white bg-amber-600 hover:bg-amber-500 px-4 py-2 rounded-lg">
+        วิเคราะห์ด้วย AI
+      </button>
+    </form>
+  </div>
+
+  <!-- แสดงผลลัพธ์ -->
+  {% if face_shape %}
+    <div class="bg-white rounded-2xl p-4 text-black space-y-3">
+      <h2 class="text-lg font-semibold">ผลการวิเคราะห์</h2>
+
+      <div class="flex flex-col md:flex-row gap-4">
+        {% if image_preview %}
+          <div>
+            <p class="text-sm text-gray-600 mb-1">รูปที่คุณอัปโหลด</p>
+            <img src="{{ image_preview.url }}" alt="Uploaded face"
+                 class="w-40 h-40 object-cover rounded-xl border">
+          </div>
+        {% endif %}
+
+        <div class="flex-1 space-y-2">
+          <p>
+            รูปหน้าโดยประมาณ:
+            <span class="font-semibold">
+              {% if face_shape == "round" %}กลม (Round)
+              {% elif face_shape == "oval" %}รูปไข่ (Oval)
+              {% elif face_shape == "square" %}เหลี่ยม (Square)
+              {% elif face_shape == "oblong" %}ยาว (Oblong)
+              {% elif face_shape == "heart" %}หัวใจ (Heart-shaped)
+              {% else %}{{ face_shape }}{% endif %}
+            </span>
+          </p>
+          {% if gender %}
+            <p>เพศโดยประมาณ: <span class="font-semibold">{{ gender }}</span></p>
+          {% endif %}
+        </div>
+      </div>
+
+      {% if suggestions %}
+        <div class="mt-4">
+          <h3 class="font-semibold mb-2">ทรงผมที่แนะนำสำหรับคุณ</h3>
+          <ul class="list-disc ml-6 space-y-1 text-sm text-gray-800">
+            {% for s in suggestions %}
+              <li>{{ s }}</li>
+            {% endfor %}
+          </ul>
+          <p class="text-xs text-gray-500 mt-2">
+            *ผลลัพธ์เป็นคำแนะนำเบื้องต้น คุณสามารถปรึกษาช่างตัดผม CUTCAMP เพื่อปรับให้เข้ากับรูปหน้าและสไตล์จริงได้
+          </p>
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

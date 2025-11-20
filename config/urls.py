@@ -24,6 +24,7 @@ from services import views_admin as admin_views
 from accounts import views_admin as acc_admin
 from bookings import views_admin as booking_admin
 from reviews import views_public as review_public
+from hairai.views import hair_ai_view
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -70,6 +71,9 @@ urlpatterns = [
     # Review
     path("reviews/", review_public.reviews_page, name="reviews_page"),
     path("my-bookings/<int:booking_id>/review/", review_public.create_review_from_booking, name="review_create_from_booking",),
+
+    # Hair AI
+    path("hair-ai/", hair_ai_view, name="hair_ai"),
     
 ]
 

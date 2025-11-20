@@ -181,7 +181,7 @@ def my_bookings(request):
 def booking_edit(request, pk):
     booking = get_object_or_404(Booking, pk=pk, customer=request.user)
 
-    # 1) เช็คสถานะ + เงื่อนไขเวลา
+    # เช็คสถานะ + เงื่อนไขเวลา
     if hasattr(Booking, "status"):
         if booking.status in ["completed", "canceled"]:
             messages.error(request, "ไม่สามารถแก้ไขคิวนี้ได้")
@@ -191,7 +191,7 @@ def booking_edit(request, pk):
         messages.error(request, "ต้องแก้ไขล่วงหน้าอย่างน้อย 1 ชั่วโมงก่อนถึงคิว")
         return redirect("my_bookings")
 
-    # 2) ถ้าเป็นการยืนยันเลือก slot (STEP 2)
+    # ถ้าเป็นการยืนยันเลือก slot
     if request.method == "POST" and "start_at" in request.POST:
         confirm_form = BookingEditConfirmForm(request.POST)
         if confirm_form.is_valid():
@@ -222,7 +222,7 @@ def booking_edit(request, pk):
             messages.error(request, "ข้อมูลไม่ถูกต้อง กรุณาลองใหม่")
             return redirect("booking_edit", pk=booking.pk)
 
-    # 3) STEP 1: เลือกบริการ/ช่าง/วัน แล้วแสดง slot
+    # เลือกบริการ/ช่าง/วัน แล้วแสดง slot
     initial = {
         "service": booking.service,
         "barber": booking.barber,

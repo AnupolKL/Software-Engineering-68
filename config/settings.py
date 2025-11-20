@@ -18,6 +18,9 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
+HAIR_AI_API_URL = os.getenv("HAIR_AI_API_URL", "https://api.example.com/face-shape")
+HAIR_AI_API_KEY = os.getenv("HAIR_AI_API_KEY", "")
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
@@ -51,6 +54,7 @@ INSTALLED_APPS = [
     "reviews",
         #third-party
     "tailwind",
+    "hairai",
 ]
 
 AUTH_USER_MODEL = "accounts.User"
