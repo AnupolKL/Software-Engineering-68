@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}จองสำเร็จ | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-xl mx-auto p-6 text-center">
+  <h1 class="text-2xl font-bold mb-2 text-white">จองคิวสำเร็จ!</h1>
+  <p class="text-white">ขอบคุณที่ใช้บริการ CUTCAMP</p>
+  <a href="{% url 'service_list' %}" class="inline-block mt-6 px-5 py-2 border bg-[#2a3731] p-4 rounded-xl text-white">กลับไปเลือกบริการ</a>
+</section>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}จัดการช่าง | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-6xl mx-auto p-6 bg-[#2a3731] rounded-xl">
+  <a class="font-bold text-white" href="{% url 'admin_dashboard' %}">< กลับ</a>
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-white">ช่างทั้งหมด</h1>
+    <a href="{% url 'admin_barber_create' %}" class="bg-green-200 text-black px-4 py-2 rounded">+ เพิ่มช่าง</a>
+  </div>
+
+  <form method="get" class="mt-4">
+    <input name="q" value="{{ q }}" placeholder="ค้นหาชื่อผู้ใช้/อีเมล..."
+           class="border rounded p-2 w-full sm:w-80 bg-white">
+  </form>
+
+  <div class="mt-4 overflow-x-auto">
+    <table class="min-w-full border">
+      <thead class="bg-gray-300">
+        <tr>
+          <th class="p-2 border">ID</th>
+          <th class="p-2 border text-left">ชื่อผู้ใช้</th>
+          <th class="p-2 border">อีเมล</th>
+          <th class="p-2 border">สถานะ</th>
+          <th class="p-2 border">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in barbers %}
+          <tr class="odd:bg-white even:bg-gray-50">
+            <td class="p-2 border text-center">{{ b.id }}</td>
+            <td class="p-2 border">{{ b.username }}</td>
+            <td class="p-2 border">{{ b.email|default:"-" }}</td>
+            <td class="p-2 border text-center">
+              {% if b.is_active %}<span class="text-green-400">ใช้งาน</span>{% else %}<span class="text-gray-500">ปิด</span>{% endif %}
+            </td>
+            <td class="p-2 border text-center">
+              <a class="bg-blue-300 hover:bg-blue-200 px-2 py-1 text-black rounded-lg" href="{% url 'admin_barber_edit' b.pk %}">แก้ไข</a>
+              <a class="bg-red-500 hover:bg-red-400 px-2 py-1 text-white rounded-lg"href="{% url 'admin_barber_delete' b.pk %}">ลบ</a>
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td class="p-4 text-center" colspan="5">ยังไม่มีช่าง</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

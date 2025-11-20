@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}ลบบริการ | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-xl mx-auto p-6">
+  <h1 class="text-2xl font-bold mb-4">ยืนยันการลบ</h1>
+  <p class="mb-6">คุณต้องการลบบริการ <strong>{{ obj.name }}</strong> ใช่ไหม?</p>
+  <form method="post" class="flex gap-3">
+    {% csrf_token %}
+    <button class="bg-red-600 text-white px-5 py-2 rounded">ลบ</button>
+    <a href="{% url 'admin_service_list' %}" class="px-5 py-2 border rounded">ยกเลิก</a>
+  </form>
+</section>
+{% endblock %}

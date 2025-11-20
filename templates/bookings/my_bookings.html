@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}การจองของฉัน | CUTCAMP{% endblock %}
+
+{% block content %}
+<section class="max-w-5xl mx-auto p-6 space-y-6 bg-[#2a3731] rounded-xl">
+  <h1 class="text-2xl font-bold mb-2 text-white bg-[#212c27] max-w-5xl mx-auto p-6 space-y-6 rounded-xl text-center">การจองของฉัน</h1>
+  <p class="text-gray-300 text-md">คิวและประวัติการจองของฉัน</p>
+  <p class="text-gray-400 text-sm">หมายเหตุ : สามารถแก้ไขก่อนเวลา 1 ชั่วโมงก่อนถึงเวลาคิว</p>
+  
+
+  <div class="overflow-x-auto bg-white border rounded-2xl">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="p-2 border text-left">วันที่ / เวลา</th>
+          <th class="p-2 border text-left">บริการ</th>
+          <th class="p-2 border text-left">ช่าง</th>
+          <th class="p-2 border text-left">สถานะ</th>
+          <th class="p-2 border text-left">ชนิด</th>
+          <th class="p-2 border text-left">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+          <tr class="odd:bg-white even:bg-gray-50">
+            <td class="p-2 border whitespace-nowrap">
+              {{ b.start_at|date:"Y-m-d H:i" }}
+            </td>
+            <td class="p-2 border">
+              {{ b.service.name }}
+            </td>
+            <td class="p-2 border">
+              {{ b.barber.username }}
+            </td>
+            <td class="p-2 border">
+              {% if b.status %}
+                {{ b.get_status_display }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td class="p-2 border">
+              {% if b.source %}
+                {{ b.get_source_display }}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+            <td class="p-2 border text-center row space-x-3 whitespace-nowrap">
+              {% if b.status == "completed" %}
+                {% if b.review %}
+                  <span class="text-amber-500 text-sm">รีวิวแล้ว</span>
+                {% else %}
+                  <a href="{% url 'review_create_from_booking' b.id %}"
+                    class="text-white bg-amber-600 hover:bg-amber-500 px-2 py-1 rounded-lg">
+                    เขียนรีวิว
+                  </a>
+                {% endif %}
+
+              {% elif b.status == "canceled" %}
+                <span class="text-gray-400 text-sm">ยกเลิกแล้ว</span>
+
+              {% else %}
+                {% if b.can_modify %}
+                  <a href="{% url 'booking_edit' b.id %}" class="text-white bg-blue-400 hover:bg-blue-300 px-2 py-1 rounded-lg">
+                    แก้ไข
+                  </a>
+                  <form action="{% url 'booking_cancel' b.id %}" method="post" class="inline">
+                    {% csrf_token %}
+                    <button type="submit" class="text-white bg-red-500 hover:bg-red-400 px-2 py-1 rounded-lg">
+                      ยกเลิก
+                    </button>
+                  </form>
+                {% else %}
+                  <span class="text-gray-400 text-sm">ไม่สามารถแก้ไขได้</span>
+                {% endif %}
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="p-4 text-center text-gray-500">
+              ยังไม่มีการจองในระบบ
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

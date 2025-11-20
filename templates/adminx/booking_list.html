@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}จัดการคิว | CUTCAMP{% endblock %}
+{% block content %}
+<section class="max-w-7xl mx-auto p-6 space-y-4 text-white bg-[#2a3731] rounded-xl">
+  <a class="font-bold" href="{% url 'admin_dashboard' %}">< กลับ</a>
+  <div class="flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-white">จัดการคิว</h1>
+    <a href="{% url 'admin_booking_walkin' %}" class="bg-green-200 hover:bg-green-100 text-black px-4 py-2 rounded">+ เพิ่มคิว Walk-in</a>
+  </div>
+
+  <form method="get" class="flex gap-3 items-end flex-wrap">
+    <div>
+      <label class="block text-sm">ค้นหา</label>
+      <input name="q" value="{{ q }}" placeholder="บริการ/ช่าง/ลูกค้า/หมายเหตุ" class="border rounded p-2 w-64">
+    </div>
+    <div>
+      <label class="block text-sm">สถานะ</label>
+      <select name="status" class="border rounded p-2 text-black bg-white">
+        <option value="">ทั้งหมด</option>
+        <option value="confirmed" {% if status == 'confirmed' %}selected{% endif %}>ยืนยันแล้ว</option>
+        <option value="completed" {% if status == 'completed' %}selected{% endif %}>เสร็จสิ้น</option>
+        <option value="canceled"  {% if status == 'canceled' %}selected{% endif %}>ยกเลิก</option>
+      </select>
+    </div>
+    <button class="bg-gray-900 text-white px-4 py-2 rounded">กรอง</button>
+    {% if q or status %}
+      <a href="{% url 'admin_booking_list' %}" class="text-sm text-gray-600">ล้างตัวกรอง</a>
+    {% endif %}
+  </form>
+
+  <div class="overflow-x-auto text-black rounded-xl">
+    <table class="min-w-full border">
+      <thead class="bg-gray-300">
+        <tr>
+          <th class="p-2 border">เริ่ม</th>
+          <th class="p-2 border">สิ้นสุด</th>
+          <th class="p-2 border">บริการ</th>
+          <th class="p-2 border">ช่าง</th>
+          <th class="p-2 border">ลูกค้า</th>
+          <th class="p-2 border">ชนิด</th>
+          <th class="p-2 border">สถานะ</th>
+          <th class="p-2 border">จัดการ</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in bookings %}
+          <tr class="odd:bg-white even:bg-gray-50">
+            <td class="p-2 border whitespace-nowrap">{{ b.start_at|date:"Y-m-d H:i" }}</td>
+            <td class="p-2 border whitespace-nowrap">{{ b.end_at|date:"Y-m-d H:i" }}</td>
+            <td class="p-2 border">{{ b.service.name }}</td>
+            <td class="p-2 border">{{ b.barber.username }}</td>
+            <td class="p-2 border">{{ b.customer.username|default:"Walk-in" }}</td>
+            <td class="p-2 border">{{ b.get_source_display }}</td>
+            <td class="p-2 border">
+              {% if b.status == "confirmed" %}<span class="text-blue-600">ยืนยัน</span>
+              {% elif b.status == "completed" %}<span class="text-amber-300">เสร็จสิ้น</span>
+              {% else %}<span class="text-gray-500">ยกเลิก</span>{% endif %}
+            </td>
+            <td class="p-2 border text-center whitespace-nowrap">
+              {% if b.id %}
+                {% if b.status == "confirmed" or b.status == "pending" %}
+                  <a class="bg-amber-200 hover:bg-amber-100 px-2 py-1 rounded-lg text-black" href="{% url 'admin_booking_addon' b.id %}">เพิ่มบริการเสริม</a>
+                  &nbsp;|&nbsp;
+                  <a class="text-white bg-red-500 hover:bg-red-400 px-2 py-1 rounded-lg" href="{% url 'admin_booking_cancel' b.id %}">ยกเลิก</a>
+                {% else %}
+                  <span class="text-gray-400 text-sm">ปิดการแก้ไข</span>
+                {% endif %}
+              {% else %}
+                -
+              {% endif %}
+            </td>
+
+          </tr>
+        {% empty %}
+          <tr><td colspan="8" class="p-4 text-center text-black bg-white">ยังไม่มีคิว</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

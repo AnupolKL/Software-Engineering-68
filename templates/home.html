@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CUTCAMP | หน้าแรก{% endblock %}
+
+{% block content %}
+<section class="relative h-screen">
+  <!-- รูปพื้นหลัง -->
+  <img src="{% static 'images/2025-09-10005622.jpg' %}" 
+       alt="CUTCAMP Barber"
+       class="w-full h-full object-cover">
+  <!-- Overlay ดำโปร่ง -->
+  <div class="absolute inset-0 bg-black/40"></div>
+  <!-- ข้อความ + ปุ่ม -->
+  <div class="absolute inset-0 z-10 flex flex-col items-center justify-center text-center text-white px-4">
+    <h1 class="text-4xl md:text-6xl font-bold mb-6">CUTCAMP Barber</h1>
+    <div class="flex flex-col gap-4">
+      {% if request.user.is_authenticated %}
+      <a href="{% url 'booking_step1' %}"
+        class="bg-[#D7A86E] hover:bg-[#74844f] text-white px-6 py-3 rounded-md text-lg font-medium">
+        จองตอนนี้
+      </a>
+      {% else %}
+      <a href="{% url 'service_list' %}"
+        class="bg-[#D7A86E] hover:bg-[#74844f] text-white px-6 py-3 rounded-md text-lg font-medium">
+        จองตอนนี้
+      </a>
+      {% endif %}
+      <a href="#" 
+         class="bg-yellow-600 hover:bg-yellow-500 text-white px-6 py-3 rounded-md text-lg font-medium">
+        ให้เราแนะนำทรงผม ?
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
