@@ -18,8 +18,8 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-HAIR_AI_API_URL = os.getenv("HAIR_AI_API_URL", "https://api.example.com/face-shape")
-HAIR_AI_API_KEY = os.getenv("HAIR_AI_API_KEY", "")
+HAIR_AI_API_URL = os.getenv("HF_FACE_API_URL", "")
+HAIR_AI_API_KEY = os.getenv("HF_FACE_API_TOKEN", "")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
