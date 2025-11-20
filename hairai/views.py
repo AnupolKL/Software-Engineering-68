@@ -2,8 +2,9 @@ import requests
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib import messages
-
+from .gemini import analyze_face_shape_with_gemini
 from .forms import HairAIForm
+from django.contrib import messages
 
 
 # แนะนำทรงผมตามรูปหน้า
@@ -65,34 +66,34 @@ def call_face_shape_api(image_file):
 
 
 def hair_ai_view(request):
-    face_shape = None
-    gender = None
+    result = None
     suggestions = None
-    image_preview = None  # เผื่ออยากแสดงรูปที่อัปโหลด
+    image_preview = None
 
     if request.method == "POST":
         form = HairAIForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.cleaned_data["image"]
-            try:
-                # เรียก API ภายนอก
-                face_shape, gender = call_face_shape_api(image)
+            image_preview = image
 
-                if not face_shape:
-                    messages.error(request, "ไม่สามารถตรวจจับรูปหน้าได้ กรุณาลองรูปอื่น")
+            try:
+                result = analyze_face_shape_with_gemini(image)
+                face_shape = result.get("face_shape")
+
+                if face_shape:
+                    suggestions = recommend_hairstyles(face_shape)
                 else:
-                    suggestions = recommend_hairstyles(face_shape, gender)
-                    # เก็บชื่อไฟล์ preview ถ้าคุณเซฟ
-                    image_preview = image
-            except requests.RequestException as e:
-                messages.error(request, f"เกิดข้อผิดพลาดในการเรียก AI: {e}")
+                    messages.error(request, "AI ไม่สามารถวิเคราะห์รูปหน้าได้ กรุณาลองรูปอื่น")
+
+            except Exception as e:
+                messages.error(request, f"เกิดข้อผิดพลาด: {e}")
+
     else:
         form = HairAIForm()
 
     return render(request, "hairai/hair_ai.html", {
         "form": form,
-        "face_shape": face_shape,
-        "gender": gender,
+        "result": result,
         "suggestions": suggestions,
         "image_preview": image_preview,
     })

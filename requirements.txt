@@ -9,4 +9,4 @@ sqlparse
 tzdata
 whitenoise
 requests
-requests
+google-generativeai

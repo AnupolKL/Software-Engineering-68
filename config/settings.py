@@ -18,6 +18,8 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
+GEMINI_API_KEY = os.getenv("AIzaSyBAqgNtuxVhvbcvJ2skLUS8lny411cL8xI")
+
 HAIR_AI_API_URL = os.getenv("HF_FACE_API_URL", "")
 HAIR_AI_API_KEY = os.getenv("HF_FACE_API_TOKEN", "")
 
