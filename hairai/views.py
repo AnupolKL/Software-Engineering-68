@@ -10,7 +10,6 @@ from django.contrib import messages
 # แนะนำทรงผมตามรูปหน้า
 def recommend_hairstyles(face_shape: str, gender: str | None = None):
     face_shape = (face_shape or "").lower()
-    # สามารถปรับ rule ให้ละเอียดกว่านี้ได้
     data = {
         "round": [
             "ทรง Fade ด้านข้าง + ด้านบนเพิ่มวอลลุ่ม",
@@ -45,6 +44,58 @@ def recommend_hairstyles(face_shape: str, gender: str | None = None):
     ]
     return data.get(face_shape, default_list)
 
+def hair_ai_view(request):
+    result = None
+    suggestions = None
+    image_preview = None
+    face_shape = None
+    gender = None
+
+    if request.method == "POST":
+        form = HairAIForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = form.cleaned_data["image"]
+            image_preview = image
+
+            print("DEBUG VIEW: form.is_valid() = True")  # 👈 เช็คว่ามา POST จริง
+
+            try:
+                # ✅ เรียก Gemini จริง
+                result = analyze_face_shape_with_gemini(image)
+                print("DEBUG RESULT DICT:", result)
+
+                if result:
+                    face_shape = (result.get("face_shape") or "").lower()
+                    gender = result.get("gender")
+
+                    if face_shape:
+                        suggestions = recommend_hairstyles(face_shape, gender)
+                    else:
+                        messages.error(
+                            request,
+                            "AI ไม่สามารถวิเคราะห์รูปหน้าได้ กรุณาลองอัปโหลดรูปอื่น"
+                        )
+                else:
+                    messages.error(request, "AI ไม่ได้ส่งผลลัพธ์กลับมา")
+
+            except Exception as e:
+                print("DEBUG EXCEPTION:", e)
+                messages.error(request, f"เกิดข้อผิดพลาดจาก AI: {e}")
+
+        else:
+            print("DEBUG VIEW: form.is_valid() = False, errors =", form.errors)
+            messages.error(request, "กรุณาเลือกไฟล์รูปภาพให้ถูกต้อง")
+    else:
+        form = HairAIForm()
+
+    return render(request, "hairai/hair_ai.html", {
+        "form": form,
+        "result": result,
+        "suggestions": suggestions,
+        "image_preview": image_preview,
+        "face_shape": face_shape,
+        "gender": gender,
+    })
 
 def call_face_shape_api(image_file):
     url = settings.HAIR_AI_API_URL
@@ -64,36 +115,3 @@ def call_face_shape_api(image_file):
     gender = data.get("gender")          # ถ้ามี
     return face_shape, gender
 
-
-def hair_ai_view(request):
-    result = None
-    suggestions = None
-    image_preview = None
-
-    if request.method == "POST":
-        form = HairAIForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = form.cleaned_data["image"]
-            image_preview = image
-
-            try:
-                result = analyze_face_shape_with_gemini(image)
-                face_shape = result.get("face_shape")
-
-                if face_shape:
-                    suggestions = recommend_hairstyles(face_shape)
-                else:
-                    messages.error(request, "AI ไม่สามารถวิเคราะห์รูปหน้าได้ กรุณาลองรูปอื่น")
-
-            except Exception as e:
-                messages.error(request, f"เกิดข้อผิดพลาด: {e}")
-
-    else:
-        form = HairAIForm()
-
-    return render(request, "hairai/hair_ai.html", {
-        "form": form,
-        "result": result,
-        "suggestions": suggestions,
-        "image_preview": image_preview,
-    })

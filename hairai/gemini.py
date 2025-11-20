@@ -1,18 +1,25 @@
 import google.generativeai as genai
 from django.conf import settings
 import json
+import re
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def analyze_face_shape_with_gemini(image_file):
     """
     รับรูปจาก Django (InMemoryUploadedFile)
     ส่งไปให้ Google Gemini วิเคราะห์
+    และพยายามดึง JSON ที่มี face_shape, gender, confidence ออกมา
     """
 
     # ตั้งค่า API Key
     genai.configure(api_key=settings.GEMINI_API_KEY)
 
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel("gemini-1.5-flash-latest")
 
+    # อ่าน bytes จากไฟล์
     image_bytes = image_file.read()
 
     prompt = """
@@ -26,15 +33,49 @@ def analyze_face_shape_with_gemini(image_file):
       "gender": "male / female / unknown",
       "confidence": 0.0 - 1.0
     }
+
+    ห้ามอธิบายเพิ่ม ห้ามใส่คำอธิบายอื่น ห้ามใส่ Markdown หรือโค้ดบล็อก
+    ให้ตอบกลับเป็น JSON ด้านบนเท่านั้น
     """
 
     result = model.generate_content(
-        [prompt, {"mime_type": image_file.content_type, "data": image_bytes}]
+        [
+            prompt,
+            {
+                "mime_type": image_file.content_type,
+                "data": image_bytes,
+            },
+        ]
     )
 
-    response_text = result.text.strip()
+    text = (result.text or "").strip()
+    print("DEBUG GEMINI RAW:", text)  # 👈 ต้องเห็นบรรทัดนี้ใน terminal
+    logger.debug("Gemini raw response: %s", text)
+
+    # เผื่อ Gemini ใส่ ```json ... ```
+    if text.startswith("```"):
+        text = re.sub(r"^```[a-zA-Z0-9]*\s*", "", text)
+        text = re.sub(r"```$", "", text.strip())
+        text = text.strip()
+        print("DEBUG GEMINI STRIPPED:", text)
+
+    # ดึงเฉพาะส่วน {...}
+    if "{" in text and "}" in text:
+        start = text.find("{")
+        end = text.rfind("}") + 1
+        candidate = text[start:end]
+    else:
+        candidate = text
 
     try:
-        return json.loads(response_text)
-    except:
+        data = json.loads(candidate)
+    except json.JSONDecodeError as e:
+        print("JSON PARSE ERROR:", e)
+        logger.error("Failed to parse JSON from Gemini: %s", e)
         return {"face_shape": None, "gender": None, "confidence": 0}
+
+    return {
+        "face_shape": data.get("face_shape"),
+        "gender": data.get("gender"),
+        "confidence": data.get("confidence", 0),
+    }
