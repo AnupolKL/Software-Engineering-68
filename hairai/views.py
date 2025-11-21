@@ -1,8 +1,9 @@
 import requests
+import tempfile
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib import messages
-from .gemini import analyze_face_shape_with_gemini
+from .deepface_utils import analyze_face_with_deepface
 from .forms import HairAIForm
 from django.contrib import messages
 
@@ -10,46 +11,124 @@ from django.contrib import messages
 # แนะนำทรงผมตามรูปหน้า
 def recommend_hairstyles(face_shape: str, gender: str | None = None):
     face_shape = (face_shape or "").lower()
+    gender = (gender or "male").lower()
+
+    if gender != "male":
+        return []
+    
+    # ใช้ชื่อไฟล์ให้ตรงกับรูปที่คุณจะเอาไปวางใน static/hairstyles/
     data = {
         "round": [
-            "ทรง Fade ด้านข้าง + ด้านบนเพิ่มวอลลุ่ม",
-            "ทรง Pompadour",
-            "ทรง Undercut ด้านข้างเตี้ย ด้านบนตั้ง"
+            {
+                "name": "Fade ด้านข้าง + ด้านบนเพิ่มวอลลุ่ม",
+                "image": "hairstyles/round_fade_volume.jpg",
+                "description": "ช่วยให้หน้าไม่ดูกลมเกินไป เพิ่มความสูงด้านบน"
+            },
+            {
+                "name": "Pompadour",
+                "image": "hairstyles/round_pompadour.jpg",
+                "description": "ด้านข้างสั้น ด้านบนพอง ช่วยบาลานซ์หน้ากลม"
+            },
+            {
+                "name": "Undercut ด้านข้างเตี้ย ด้านบนตั้ง",
+                "image": "hairstyles/round_undercut.jpg",
+                "description": "ตัดให้หน้าเรียวขึ้น ดูคมชัดขึ้น"
+            },
         ],
         "oval": [
-            "ทรง Side Part แสกข้าง",
-            "ทรง Crop สั้นเท่ากันทั้งหัว",
-            "ทรง Slick Back"
+            {
+                "name": "Side Part แสกข้าง",
+                "image": "hairstyles/oval_sidepart.jpg",
+                "description": "เข้ากับโครงหน้าส่วนใหญ่ ดูสุภาพและเรียบร้อย"
+            },
+            {
+                "name": "Crop สั้นเท่ากันทั้งหัว",
+                "image": "hairstyles/oval_crop.jpg",
+                "description": "ดูแลง่าย เหมาะกับคนไม่ชอบเซ็ตผม"
+            },
+            {
+                "name": "Slick Back",
+                "image": "hairstyles/oval_slickback.jpg",
+                "description": "หวีเสยหลัง ให้ลุคเรียบหรู เท่ สุภาพ"
+            },
         ],
         "square": [
-            "ทรง Buzz Cut สั้นเกรียน",
-            "ทรง Side Part + Fade",
-            "ทรง Spiky ตั้งๆ ด้านบน"
+            {
+                "name": "Buzz Cut สั้นเกรียน",
+                "image": "hairstyles/square_buzz.jpg",
+                "description": "เน้นความคมของกราม ดูแมนสุด ๆ"
+            },
+            {
+                "name": "Side Part + Fade",
+                "image": "hairstyles/square_sidepart_fade.jpg",
+                "description": "บาลานซ์กรามเหลี่ยมให้ซอฟต์ลง"
+            },
+            {
+                "name": "Spiky ตั้งด้านบน",
+                "image": "hairstyles/square_spiky.jpg",
+                "description": "เพิ่มความสูงด้านบนให้หน้าดูยาวขึ้น"
+            },
         ],
         "oblong": [
-            "ทรงมีหน้าม้า (Fringe)",
-            "ทรง Medium Length ผมปานกลางพองๆ",
-            "ทรง Curly / Wavy"
+            {
+                "name": "ทรงมีหน้าม้า (Fringe)",
+                "image": "hairstyles/oblong_fringe.jpg",
+                "description": "ช่วยลดความยาวใบหน้า ให้ดูสั้นลง"
+            },
+            {
+                "name": "Medium Length ผมปานกลางพอง ๆ",
+                "image": "hairstyles/oblong_medium.jpg",
+                "description": "เพิ่มวอลลุ่มด้านข้างให้หน้าดูบาลานซ์"
+            },
+            {
+                "name": "Wavy / Curly",
+                "image": "hairstyles/oblong_wavy.jpg",
+                "description": "ลอนช่วยทำให้หน้าดูไม่ยาวเกินไป"
+            },
         ],
         "heart": [
-            "ทรง Textured Crop",
-            "ทรง Low Fade + ปล่อยด้านบนฟูๆ",
-            "ทรง Messy Quiff"
+            {
+                "name": "Textured Crop",
+                "image": "hairstyles/heart_crop.jpg",
+                "description": "ช่วยบาลานซ์หน้าผากกว้างและคางแหลม"
+            },
+            {
+                "name": "Low Fade + ด้านบนฟู ๆ",
+                "image": "hairstyles/heart_lowfade.jpg",
+                "description": "ลดความเด่นที่หน้าผาก และเพิ่มเท็กซ์เจอร์ด้านบน"
+            },
+            {
+                "name": "Messy Quiff",
+                "image": "hairstyles/heart_messyquiff.jpg",
+                "description": "เซ็ตยุ่ง ๆ ให้ลุคสบาย ๆ แต่ยังดูมีสไตล์"
+            },
         ],
     }
+
     default_list = [
-        "ทรง Side Part มาตรฐาน",
-        "ทรง Fade ด้านข้าง",
-        "ทรง Crop สั้นดูแลง่าย"
+        {
+            "name": "Side Part มาตรฐาน",
+            "image": "hairstyles/default_sidepart.jpg",
+            "description": "ทรงมาตรฐาน เข้ากับรูปหน้าหลายแบบ"
+        },
+        {
+            "name": "Fade ด้านข้าง",
+            "image": "hairstyles/default_fade.jpg",
+            "description": "ด้านข้างเฟด เข้ารูป ดูทันสมัย"
+        },
+        {
+            "name": "Crop สั้นดูแลง่าย",
+            "image": "hairstyles/default_crop.jpg",
+            "description": "เหมาะกับคนไม่ค่อยเซ็ตผม"
+        },
     ]
     return data.get(face_shape, default_list)
 
 def hair_ai_view(request):
-    result = None
-    suggestions = None
-    image_preview = None
     face_shape = None
     gender = None
+    suggestions = None
+    image_preview = None
 
     if request.method == "POST":
         form = HairAIForm(request.POST, request.FILES)
@@ -57,45 +136,54 @@ def hair_ai_view(request):
             image = form.cleaned_data["image"]
             image_preview = image
 
-            print("DEBUG VIEW: form.is_valid() = True")  # 👈 เช็คว่ามา POST จริง
+            # เซฟไฟล์ temp ให้ DeepFace อ่าน
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp:
+                for chunk in image.chunks():
+                    tmp.write(chunk)
+                tmp_path = tmp.name
 
-            try:
-                # ✅ เรียก Gemini จริง
-                result = analyze_face_shape_with_gemini(image)
-                print("DEBUG RESULT DICT:", result)
+            result = analyze_face_with_deepface(tmp_path)
+            print("DEBUG DEEPFACE RESULT:", result)
 
-                if result:
-                    face_shape = (result.get("face_shape") or "").lower()
-                    gender = result.get("gender")
+            face_shape = result.get("face_shape")
+            gender = result.get("gender")  # male / female / unknown
 
-                    if face_shape:
-                        suggestions = recommend_hairstyles(face_shape, gender)
-                    else:
-                        messages.error(
-                            request,
-                            "AI ไม่สามารถวิเคราะห์รูปหน้าได้ กรุณาลองอัปโหลดรูปอื่น"
-                        )
+            # --- เงื่อนไขเพศ: แนะนำเฉพาะผู้ชาย ---
+            if gender == "female":
+                messages.info(
+                    request,
+                    "สามารถแนะนำได้เฉพาะทรงสำหรับผมผู้ชาย"
+                )
+                suggestions = None  # ไม่ส่งอะไรไปแสดง
+            elif gender == "male":
+                # เฉพาะผู้ชายเท่านั้นที่เข้าถึงระบบแนะนำทรงผม
+                if face_shape and face_shape != "unknown":
+                    suggestions = recommend_hairstyles(face_shape, gender)
                 else:
-                    messages.error(request, "AI ไม่ได้ส่งผลลัพธ์กลับมา")
-
-            except Exception as e:
-                print("DEBUG EXCEPTION:", e)
-                messages.error(request, f"เกิดข้อผิดพลาดจาก AI: {e}")
+                    messages.error(
+                        request,
+                        "ไม่สามารถวิเคราะห์รูปหน้าได้ กรุณาอัปโหลดรูปที่ชัด และหันหน้าตรง"
+                    )
+            else:
+                # gender unknown
+                messages.error(
+                    request,
+                    "ระบบไม่มั่นใจเพศจากรูปนี้ จึงไม่สามารถแนะนำทรงผมได้"
+                )
 
         else:
-            print("DEBUG VIEW: form.is_valid() = False, errors =", form.errors)
-            messages.error(request, "กรุณาเลือกไฟล์รูปภาพให้ถูกต้อง")
+            messages.error(request, "กรุณาเลือกรูปภาพให้ถูกต้อง")
     else:
         form = HairAIForm()
 
     return render(request, "hairai/hair_ai.html", {
         "form": form,
-        "result": result,
-        "suggestions": suggestions,
-        "image_preview": image_preview,
         "face_shape": face_shape,
         "gender": gender,
+        "suggestions": suggestions,
+        "image_preview": image_preview,
     })
+
 
 def call_face_shape_api(image_file):
     url = settings.HAIR_AI_API_URL

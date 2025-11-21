@@ -19,8 +19,6 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
