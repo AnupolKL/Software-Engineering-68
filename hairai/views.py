@@ -3,7 +3,7 @@ import tempfile
 from django.shortcuts import render
 from django.conf import settings
 from django.contrib import messages
-from .deepface_utils import analyze_face_with_deepface
+from .gemini_client import analyze_with_gemini
 from .forms import HairAIForm
 from django.contrib import messages
 
@@ -124,6 +124,7 @@ def recommend_hairstyles(face_shape: str, gender: str | None = None):
     ]
     return data.get(face_shape, default_list)
 
+
 def hair_ai_view(request):
     face_shape = None
     gender = None
@@ -134,45 +135,37 @@ def hair_ai_view(request):
         form = HairAIForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.cleaned_data["image"]
-            image_preview = image
+            image_preview = image  # แสดงรูปใน template
 
-            # เซฟไฟล์ temp ให้ DeepFace อ่าน
-            with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp:
-                for chunk in image.chunks():
-                    tmp.write(chunk)
-                tmp_path = tmp.name
+            try:
+                result = analyze_with_gemini(image)
+                face_shape = result.get("face_shape")
+                gender = result.get("gender")
 
-            result = analyze_face_with_deepface(tmp_path)
-            print("DEBUG DEEPFACE RESULT:", result)
+                # เงื่อนไขเพศ
+                if gender == "female":
+                    messages.info(request, "สามารถแนะนำได้เฉพาะทรงสำหรับผมผู้ชาย")
+                    suggestions = None
 
-            face_shape = result.get("face_shape")
-            gender = result.get("gender")  # male / female / unknown
+                elif gender == "male":
+                    if face_shape:
+                        suggestions = recommend_hairstyles(face_shape, gender)
+                    else:
+                        messages.error(request, "ไม่สามารถวิเคราะห์รูปหน้าได้")
 
-            # --- เงื่อนไขเพศ: แนะนำเฉพาะผู้ชาย ---
-            if gender == "female":
-                messages.info(
-                    request,
-                    "สามารถแนะนำได้เฉพาะทรงสำหรับผมผู้ชาย"
-                )
-                suggestions = None  # ไม่ส่งอะไรไปแสดง
-            elif gender == "male":
-                # เฉพาะผู้ชายเท่านั้นที่เข้าถึงระบบแนะนำทรงผม
-                if face_shape and face_shape != "unknown":
-                    suggestions = recommend_hairstyles(face_shape, gender)
                 else:
-                    messages.error(
-                        request,
-                        "ไม่สามารถวิเคราะห์รูปหน้าได้ กรุณาอัปโหลดรูปที่ชัด และหันหน้าตรง"
-                    )
-            else:
-                # gender unknown
+                    messages.error(request, "ระบบไม่มั่นใจเพศจากรูปนี้")
+
+            except Exception as e:
+                print("GEMINI ERROR:", e)
                 messages.error(
                     request,
-                    "ระบบไม่มั่นใจเพศจากรูปนี้ จึงไม่สามารถแนะนำทรงผมได้"
+                    "เกิดข้อผิดพลาดจากระบบ AI กรุณาลองใหม่อีกครั้ง"
                 )
 
         else:
-            messages.error(request, "กรุณาเลือกรูปภาพให้ถูกต้อง")
+            messages.error(request, "กรุณาเลือกรูปภาพที่ถูกต้อง")
+
     else:
         form = HairAIForm()
 
@@ -183,6 +176,8 @@ def hair_ai_view(request):
         "suggestions": suggestions,
         "image_preview": image_preview,
     })
+
+
 
 
 def call_face_shape_api(image_file):

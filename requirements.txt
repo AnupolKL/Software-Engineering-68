@@ -9,7 +9,4 @@ sqlparse
 tzdata
 whitenoise
 requests
-deepface
-opencv-python
-tf-keras
-keras==2.15.0
+google-generativeai
