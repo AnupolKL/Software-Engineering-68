@@ -35,14 +35,12 @@
       <div class="flex flex-col md:flex-row gap-6">
 
         {# รูปหน้าที่อัปโหลด #}
-        {% if image_preview %}
-          <div class="md:w-1/3">
-            <p class="text-sm text-gray-600 mb-2">รูปของคุณ</p>
-            <div class="rounded-2xl overflow-hidden border">
-              <img src="{{ image_preview.url }}"
-                  alt="รูปหน้าของคุณ"
-                  class="w-full h-full object-cover">
-            </div>
+        {% if image_preview_url %}
+          <div>
+            <p class="text-sm text-gray-600 mb-1">รูปที่คุณอัปโหลด</p>
+            <img src="{{ image_preview_url }}"
+                alt="Uploaded face"
+                class="w-40 h-40 object-cover rounded-xl border">
           </div>
         {% endif %}
 

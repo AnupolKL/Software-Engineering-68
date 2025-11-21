@@ -8,36 +8,22 @@ MODEL = "gemini-2.0-flash" # รุ่นที่ใช้วิเคราะ
 
 
 def _clean_gemini_json(text: str) -> str:
-    """
-    รับข้อความจาก Gemini แล้วตัด ```json ... ``` ออก
-    ให้เหลือเฉพาะ JSON เนื้อใน
-    """
     text = text.strip()
-
-    # ถ้ามาในรูป ```json ... ```
     if text.startswith("```"):
-        # ตัดเครื่องหมาย ``` ด้านท้ายออกก่อน
         if text.endswith("```"):
             text = text[3:-3].strip()
         else:
             text = text[3:].strip()
-
-        # ถ้าเปิดมาด้วยคำว่า json ให้ตัดออก
         if text.lower().startswith("json"):
             text = text[4:].strip()
-
     return text
 
 
-def analyze_with_gemini(image_file):
+def analyze_with_gemini(uploaded_file, image_bytes: bytes):
     """
-    วิเคราะห์ใบหน้าในรูปโดยใช้ Gemini API
-    คืน dict = {"face_shape":..., "gender":...}
+    uploaded_file: Django UploadedFile (มี content_type)
+    image_bytes:   bytes ของรูป (อ่านมาจาก view)
     """
-
-    # อ่านไฟล์เป็น bytes
-    image_bytes = image_file.read()
-
     model = genai.GenerativeModel(MODEL)
 
     prompt = """
@@ -50,17 +36,13 @@ def analyze_with_gemini(image_file):
   "face_shape": "round / oval / oblong / square / heart / unknown",
   "gender": "male / female / unknown"
 }
-
-กรุณาวิเคราะห์อย่างแม่นยำที่สุด:
-- face_shape ให้เลือกจาก 5 แบบนี้เท่านั้น (round, oval, oblong, square, heart)
-- gender ให้ตอบ male หรือ female เท่านั้น ถ้าไม่ชัดเจนให้ตอบ unknown
 """
 
     response = model.generate_content(
         [
             prompt,
             {
-                "mime_type": image_file.content_type or "image/jpeg",
+                "mime_type": uploaded_file.content_type or "image/jpeg",
                 "data": image_bytes,
             },
         ]

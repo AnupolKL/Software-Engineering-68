@@ -6,6 +6,8 @@ from django.contrib import messages
 from .gemini_client import analyze_with_gemini
 from .forms import HairAIForm
 from django.contrib import messages
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 
 # แนะนำทรงผมตามรูปหน้า
@@ -129,16 +131,23 @@ def hair_ai_view(request):
     face_shape = None
     gender = None
     suggestions = None
-    image_preview = None
+    image_preview_url = None   # << ใช้เก็บ URL สำหรับแสดงผล
 
     if request.method == "POST":
         form = HairAIForm(request.POST, request.FILES)
         if form.is_valid():
             image = form.cleaned_data["image"]
-            image_preview = image  # แสดงรูปใน template
+
+            # อ่านไฟล์เป็น bytes หนึ่งครั้ง
+            image_bytes = b"".join(chunk for chunk in image.chunks())
+
+            # เซฟลง MEDIA เพื่อใช้แสดงใน template
+            path = default_storage.save(f"hairai/{image.name}", ContentFile(image_bytes))
+            image_preview_url = default_storage.url(path)
 
             try:
-                result = analyze_with_gemini(image)
+                # ส่งทั้ง object + bytes ให้ Gemini ใช้
+                result = analyze_with_gemini(image, image_bytes)
                 face_shape = result.get("face_shape")
                 gender = result.get("gender")
 
@@ -158,10 +167,7 @@ def hair_ai_view(request):
 
             except Exception as e:
                 print("GEMINI ERROR:", e)
-                messages.error(
-                    request,
-                    "เกิดข้อผิดพลาดจากระบบ AI กรุณาลองใหม่อีกครั้ง"
-                )
+                messages.error(request, "เกิดข้อผิดพลาดจากระบบ AI กรุณาลองใหม่อีกครั้ง")
 
         else:
             messages.error(request, "กรุณาเลือกรูปภาพที่ถูกต้อง")
@@ -174,27 +180,6 @@ def hair_ai_view(request):
         "face_shape": face_shape,
         "gender": gender,
         "suggestions": suggestions,
-        "image_preview": image_preview,
+        "image_preview_url": image_preview_url,  # << ส่ง url เข้า template
     })
-
-
-
-
-def call_face_shape_api(image_file):
-    url = settings.HAIR_AI_API_URL
-    api_key = settings.HAIR_AI_API_KEY
-
-    files = {"file": (image_file.name, image_file.read())}
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-    }
-
-    # รูปแบบ response สมมติ: {"face_shape": "oval", "gender": "male"}
-    resp = requests.post(url, headers=headers, files=files, timeout=30)
-    resp.raise_for_status()
-    data = resp.json()
-
-    face_shape = data.get("face_shape")  # เช่น "oval"
-    gender = data.get("gender")          # ถ้ามี
-    return face_shape, gender
 
