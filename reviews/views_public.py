@@ -3,10 +3,13 @@ from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
+from django.db.models import Avg, Count
+from django.contrib.auth import get_user_model
 from django.utils import timezone
 
 from bookings.models import Booking
 from .models import Review
+from accounts.models import User
 from .forms import ReviewForm, ReviewCreateForm
 from services.models import Service
 
@@ -54,6 +57,17 @@ def reviews_page(request):
 
     reviews = reviews.order_by("-created_at")
 
+    top_barbers = (
+    User.objects
+    .filter(is_barber=True, is_active=True)
+    .annotate(
+        avg_rating=Avg("barber_bookings__review__rating"),
+        review_count=Count("barber_bookings__review", distinct=True),
+    )
+    .filter(review_count__gt=0)   # ต้องมีรีวิวอย่างน้อย 1
+    .order_by("-avg_rating", "-review_count")[:5]
+    )
+
     # ฟอร์มเขียนรีวิว (เฉพาะคนล็อกอิน)
     form = None
     if request.user.is_authenticated:
@@ -76,4 +90,5 @@ def reviews_page(request):
         "form": form,
         "services": services,
         "selected_service_id": int(service_id) if service_id else None,
+        "top_barbers": top_barbers,
     })

@@ -2,6 +2,7 @@
 {% block title %}รีวิว | CUTCAMP{% endblock %}
 
 {% block content %}
+
 <section class="max-w-5xl mx-auto p-6 space-y-6 bg-[#2a3731] rounded-xl">
 
   <h1 class="text-2xl font-bold text-white">รีวิวร้านและการบริการ</h1>
@@ -69,7 +70,53 @@
       กรุณา <a href="{% url 'login' %}" class="text-teal-200 underline">เข้าสู่ระบบ</a> เพื่อเขียนรีวิว
     </div>
   {% endif %}
+  
+  {% if top_barbers %}
+    <div class="rounded-2xl p-4 bg-white shadow-md">
+      <h2 class="text-lg font-semibold mb-3">อันดับช่างยอดนิยมจากรีวิวลูกค้า</h2>
 
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for b in top_barbers %}
+          <div class="flex items-center gap-3 p-3 rounded-xl border bg-[#f9fafb]">
+
+            <!-- รูปช่าง -->
+            <div class="w-14 h-14 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+              {% if b.avatar %}
+                <img src="{{ b.avatar.url }}" alt="{{ b.username }}" class="w-full h-full object-cover">
+              {% else %}
+                <span class="text-lg font-bold text-gray-600">
+                  {{ b.username|slice:":1"|upper }}
+                </span>
+              {% endif %}
+            </div>
+
+            <!-- ข้อมูลช่าง -->
+            <div class="flex-1">
+              <div class="font-semibold text-sm text-gray-900">
+                {{ b.username }}
+              </div>
+              <div class="text-xs text-gray-500">
+                รีวิวทั้งหมด: {{ b.review_count }} ครั้ง
+              </div>
+
+              <div class="flex items-center gap-1 text-yellow-400 mt-1">
+                <span class="text-sm font-semibold">
+                  {{ b.avg_rating|floatformat:1 }}
+                </span>
+                <!-- ไอคอนดาวเล็ก ๆ -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.18 3.62a1 1 0 00.95.69h3.8c.969 0 1.371 1.24.588 1.81l-3.078 2.234a1 1 0 00-.364 1.118l1.18 3.62c.3.921-.755 1.688-1.54 1.118L10 13.347l-3.078 2.234c-.784.57-1.838-.197-1.54-1.118l1.18-3.62a1 1 0 00-.364-1.118L3.12 9.047c-.783-.57-.38-1.81.588-1.81h3.8a1 1 0 00.95-.69l1.18-3.62z"/>
+                </svg>
+                <span class="text-[11px] text-gray-500">คะแนนเฉลี่ย</span>
+              </div>
+            </div>
+
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+  
   <!-- ส่วนดูรีวิวทั้งหมด + filter ตามบริการ -->
   <div class="rounded-2xl p-4 bg-[var(--muted)]">
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
