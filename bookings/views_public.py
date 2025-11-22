@@ -162,6 +162,16 @@ def my_bookings(request):
           .order_by("-created_at", "-start_at"))
 
     today = timezone.localdate()  # วันที่ปัจจุบัน (ตาม TZ ของ Django)
+    month_str = request.GET.get("month")
+    selected_month = None
+
+    if month_str:
+        try:
+            year, month = map(int, month_str.split("-"))
+            qs = qs.filter(start_at__year=year, start_at__month=month)
+            selected_month = month_str
+        except ValueError:
+            selected_month = None
 
     for b in qs:
         # ถ้ามี status เสร็จสิ้น/ยกเลิกแล้ว ห้ามแก้
@@ -178,6 +188,7 @@ def my_bookings(request):
     return render(request, "bookings/my_bookings.html", {
         "bookings": qs,
         "today": today,
+        "selected_month": selected_month,
     })
 
 @login_required
