@@ -20,10 +20,7 @@ def _clean_gemini_json(text: str) -> str:
 
 
 def analyze_with_gemini(uploaded_file, image_bytes: bytes):
-    """
-    uploaded_file: Django UploadedFile (มี content_type)
-    image_bytes:   bytes ของรูป (อ่านมาจาก view)
-    """
+    
     model = genai.GenerativeModel(MODEL)
 
     prompt = """

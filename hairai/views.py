@@ -18,7 +18,6 @@ def recommend_hairstyles(face_shape: str, gender: str | None = None):
     if gender != "male":
         return []
     
-    # ใช้ชื่อไฟล์ให้ตรงกับรูปที่คุณจะเอาไปวางใน static/hairstyles/
     data = {
         "round": [
             {
@@ -131,7 +130,7 @@ def hair_ai_view(request):
     face_shape = None
     gender = None
     suggestions = None
-    image_preview_url = None   # << ใช้เก็บ URL สำหรับแสดงผล
+    image_preview_url = None   #ใช้เก็บ URL สำหรับแสดงผล
 
     if request.method == "POST":
         form = HairAIForm(request.POST, request.FILES)
@@ -146,12 +145,10 @@ def hair_ai_view(request):
             image_preview_url = default_storage.url(path)
 
             try:
-                # ส่งทั้ง object + bytes ให้ Gemini ใช้
                 result = analyze_with_gemini(image, image_bytes)
                 face_shape = result.get("face_shape")
                 gender = result.get("gender")
 
-                # เงื่อนไขเพศ
                 if gender == "female":
                     messages.info(request, "สามารถแนะนำได้เฉพาะทรงสำหรับผมผู้ชาย")
                     suggestions = None

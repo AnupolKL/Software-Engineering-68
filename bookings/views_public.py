@@ -161,34 +161,39 @@ def my_bookings(request):
           .filter(customer=request.user)
           .order_by("-created_at", "-start_at"))
 
-    now = timezone.now()
-    limit = now + timedelta(hours=1)
+    today = timezone.localdate()  # วันที่ปัจจุบัน (ตาม TZ ของ Django)
 
     for b in qs:
-        # ถ้ามี status
-        if hasattr(b, "status"):
-            if b.status in ["completed", "canceled"]:
-                b.can_modify = False
-                continue
-        b.can_modify = b.start_at > limit
+        # ถ้ามี status เสร็จสิ้น/ยกเลิกแล้ว ห้ามแก้
+        if hasattr(b, "status") and b.status in ["completed", "canceled"]:
+            b.can_modify = False
+            continue
+
+        # วันที่ของคิว (แปลง start_at -> localtime -> date)
+        start_date = timezone.localtime(b.start_at).date()
+
+        # แก้ไข/ยกเลิกได้เฉพาะ "ก่อนวันคิว"
+        b.can_modify = start_date > today
 
     return render(request, "bookings/my_bookings.html", {
         "bookings": qs,
-        "now": now,
+        "today": today,
     })
 
 @login_required
 def booking_edit(request, pk):
     booking = get_object_or_404(Booking, pk=pk, customer=request.user)
 
-    # เช็คสถานะ + เงื่อนไขเวลา
-    if hasattr(Booking, "status"):
-        if booking.status in ["completed", "canceled"]:
-            messages.error(request, "ไม่สามารถแก้ไขคิวนี้ได้")
-            return redirect("my_bookings")
+    # ห้ามแก้ถ้าสถานะไม่เหมาะสม
+    if hasattr(Booking, "status") and booking.status in ["completed", "canceled"]:
+        messages.error(request, "ไม่สามารถแก้ไขคิวนี้ได้")
+        return redirect("my_bookings")
 
-    if booking.start_at <= timezone.now() + timedelta(hours=1):
-        messages.error(request, "ต้องแก้ไขล่วงหน้าอย่างน้อย 1 ชั่วโมงก่อนถึงคิว")
+    # ห้ามแก้ในวันคิว หรือหลังวันคิว
+    today = timezone.localdate()
+    start_date = timezone.localtime(booking.start_at).date()
+    if start_date <= today:
+        messages.error(request, "ไม่สามารถแก้ไขการจองในวันคิวหรือหลังวันคิวได้")
         return redirect("my_bookings")
 
     # ถ้าเป็นการยืนยันเลือก slot
@@ -201,8 +206,9 @@ def booking_edit(request, pk):
             start_at = confirm_form.cleaned_data["start_at"]
 
             # กันเปลี่ยนใกล้เวลาเกินไปอีกครั้ง เผื่อเวลาผ่านไประหว่างเลือก
-            if start_at <= timezone.now() + timedelta(hours=1):
-                messages.error(request, "เวลาใหม่ต้องห่างจากปัจจุบันอย่างน้อย 1 ชั่วโมง")
+            new_start_date = timezone.localtime(start_at).date()
+            if new_start_date <= today:
+                messages.error(request, "เวลาใหม่ต้องเป็นวันถัดไปจากวันนี้เท่านั้น")
                 return redirect("my_bookings")
 
             # อัปเดต booking เดิม
@@ -269,9 +275,12 @@ def booking_cancel(request, pk):
         messages.error(request, "ไม่สามารถยกเลิกคิวนี้ได้")
         return redirect("my_bookings")
 
-    # ห้ามยกเลิกถ้าจะเริ่มใน < 1 ชั่วโมง
-    if booking.start_at <= timezone.now() + timedelta(hours=1):
-        messages.error(request, "ไม่สามารถยกเลิกได้ ต้องแจ้งล่วงหน้าอย่างน้อย 1 ชั่วโมง")
+    today = timezone.localdate()
+    start_date = timezone.localtime(booking.start_at).date()
+
+    # ห้ามยกเลิกถ้าเป็นวันคิว หรือหลังวันคิว
+    if start_date <= today:
+        messages.error(request, "ไม่สามารถยกเลิกการจองในวันคิวหรือหลังวันคิวได้")
         return redirect("my_bookings")
 
     booking.status = "canceled"
