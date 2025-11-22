@@ -90,6 +90,9 @@ def dashboard_home(request):
         ).count(),
         "services_active": Service.objects.filter(is_active=True).count(),
         "barbers": User.objects.filter(is_barber=True, is_active=True).count(),
+        "bookings_total": Booking.objects.all().count(),
+        "bookings_canceled": Booking.objects.filter(status="canceled").count(),
+        "bookings_completed": Booking.objects.filter(status="completed").count(),
     }
 
     latest = Booking.objects.select_related("service", "barber", "customer").order_by("-start_at")[:10]

@@ -55,7 +55,7 @@
       <!-- Main content (Right) -->
       <div class="flex-1 space-y-8 ">
         <!-- สรุปตัวเลขหลัก -->
-        <div class="grid md:grid-cols-5 gap-4">
+        <div class="grid md:grid-cols-4 gap-6">
           <div class="border rounded p-4 bg-gray-200">
             <div class="text-sm text-gray-500">คิววันนี้</div>
             <div class="text-2xl font-bold">{{ stats.bookings_today }}</div>
@@ -71,6 +71,20 @@
           <div class="border rounded p-4 bg-gray-200">
             <div class="text-sm text-gray-500">ช่าง</div>
             <div class="text-2xl font-bold">{{ stats.barbers }}</div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4 mt-4">
+          <div class="border rounded-xl p-4 bg-white">
+            <div class="text-sm text-gray-500">คิวทั้งหมด</div>
+            <div class="text-2xl font-bold">{{ stats.bookings_total }}</div>
+          </div>
+          <div class="border rounded-xl p-4 bg-white">
+            <div class="text-sm text-gray-500">คิวที่ยกเลิกทั้งหมด</div>
+            <div class="text-2xl font-bold text-red-600">{{ stats.bookings_canceled }}</div>
+          </div>
+          <div class="border rounded-xl p-4 bg-white">
+            <div class="text-sm text-gray-500">คิวที่สำเร็จทั้งหมด</div>
+            <div class="text-2xl font-bold text-emerald-600">{{ stats.bookings_completed }}</div>
           </div>
         </div>
 
