@@ -5,7 +5,7 @@
 {% block content %}
 <section class="max-w-4xl mx-auto p-6 space-y-6 bg-[#2a3731] rounded-xl text-white">
 
-  <h1 class="text-2xl font-bold">AI แนะนำทรงผมที่เหมาะกับคุณ</h1>
+  <h1 class="text-2xl font-bold">แนะนำทรงผมที่เหมาะกับคุณ</h1>
   <p class="text-sm text-gray-300">
     อัปโหลดรูปใบหน้าของคุณ เพื่อให้ระบบช่วยวิเคราะห์รูปหน้าและแนะนำทรงผมที่เหมาะสม
   </p>
@@ -22,7 +22,7 @@
         {% endfor %}
       </div>
       <button class="text-white bg-amber-600 hover:bg-amber-500 px-4 py-2 rounded-lg">
-        วิเคราะห์ด้วย AI
+        วิเคราะห์
       </button>
     </form>
   </div>
@@ -30,7 +30,7 @@
   <!-- แสดงผลลัพธ์ -->
   {% if suggestions %}
     <div class="bg-white rounded-2xl p-4 text-black space-y-4 mt-4">
-      <h2 class="text-lg font-semibold">ผลลัพธ์จาก AI</h2>
+      <h2 class="text-lg font-semibold">ผลลัพธ์</h2>
 
       <div class="flex flex-col md:flex-row gap-6">
 
@@ -46,7 +46,7 @@
 
         {# รูปทรงผมที่แนะนำ #}
         <div class="flex-1">
-          <p class="text-sm text-gray-700 mb-2">ทรงผมที่ AI แนะนำให้คุณ:</p>
+          <p class="text-sm text-gray-700 mb-2">ทรงผมที่แนะนำให้คุณ:</p>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {% for rec in suggestions %}

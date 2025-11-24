@@ -2,64 +2,131 @@
 {% block title %}แก้ไขการจอง | CUTCAMP{% endblock %}
 
 {% block content %}
-<section class="max-w-5xl mx-auto p-6 space-y-6 bg-[#2a3731] rounded-xl">
-  <h1 class="text-2xl font-bold mb-2 text-white">แก้ไขการจอง</h1>
+<section class="max-w-5xl mx-auto p-8 space-y-6 bg-[#2a3731] from-[#0f1720] to-[#17221b] rounded-2xl text-white shadow-xl">
+  
+  <header class="flex items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">แก้ไขการจอง</h1>
+      <p class="mt-1 text-sm text-gray-300">ปรับปรุงรายละเอียดการจองของคุณได้ที่นี่</p>
+    </div>
+  </header>
 
-  <div class="border rounded-2xl p-4 bg-white">
-    <p class="text-sm text-gray-600">
-      คิวเดิม: {{ booking.start_at|date:"Y-m-d H:i" }} • บริการ: {{ booking.service.name }} • ช่าง: {{ booking.barber.username }}
-    </p>
-  </div>
-
-  <!-- ฟอร์มเลือกบริการ / ช่าง / วัน -->
-  <form method="post" class="space-y-4 border rounded-2xl p-4 bg-white">
-    {% csrf_token %}
-    <div class="grid md:grid-cols-3 gap-4">
+  <!-- Current booking info card -->
+  <div class="bg-white rounded-2xl p-6 text-black shadow-md border-l-4 border-amber-600">
+    <h3 class="text-sm font-bold text-black mb-3 flex items-center gap-2">คิวเดิม</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
       <div>
-        <label class="block text-sm mb-1">บริการ</label>
-        {{ form.service }}
-        {% for e in form.service.errors %}<p class="text-red-600 text-xs">{{ e }}</p>{% endfor %}
+        <p class="text-gray-500 text-xs flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="9"/><path d="M10 5v5l3 2"/></svg>
+          วันที่และเวลา
+        </p>
+        <p class="font-semibold text-gray-900 mt-1">{{ booking.start_at|date:"d M Y, H:i" }}</p>
       </div>
       <div>
-        <label class="block text-sm mb-1">ช่าง</label>
-        {{ form.barber }}
-        {% for e in form.barber.errors %}<p class="text-red-600 text-xs">{{ e }}</p>{% endfor %}
+        <p class="text-gray-500 text-xs flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7c0-1 1-2 2-2h.5M15 5h.5c1 0 2 1 2 2v10c0 1-1 2-2 2H5c-1 0-2-1-2-2V7c0-1 1-2 2-2M7 5l3-2 3 2M7 10h6M7 14h6"/></svg>
+          บริการ
+        </p>
+        <p class="font-semibold text-gray-900 mt-1">{{ booking.service.name }}</p>
       </div>
       <div>
-        <label class="block text-sm mb-1">วัน</label>
-        {{ form.date }}
-        {% for e in form.date.errors %}<p class="text-red-600 text-xs">{{ e }}</p>{% endfor %}
+        <p class="text-gray-500 text-xs flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3"/><path d="M4 14c0-2 2-3 6-3s6 1 6 3v3H4v-3z"/></svg>
+          ช่าง
+        </p>
+        <p class="font-semibold text-gray-900 mt-1">{{ booking.barber.username }}</p>
       </div>
     </div>
-    <button class="px-4 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg">ค้นหาเวลาว่าง</button>
-    <a href="{% url 'my_bookings' %}" class="hover:bg-gray-300 px-5 py-2 border rounded">
-      ย้อนกลับ
-    </a>
-  </form>
+  </div>
 
-  <!-- แสดง slot -->
+  <!-- Search form -->
+  <div class="bg-white rounded-2xl p-6 text-black shadow-md">
+    <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">ค้นหาเวลาว่างใหม่</h2>
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="flex text-sm font-medium text-gray-700 mb-2 gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7c0-1 1-2 2-2h.5M15 5h.5c1 0 2 1 2 2v10c0 1-1 2-2 2H5c-1 0-2-1-2-2V7c0-1 1-2 2-2M7 5l3-2 3 2M7 10h6M7 14h6"/></svg>
+            บริการ
+          </label>
+          <div class="border rounded-lg">
+            {{ form.service }}
+          </div>
+          {% for e in form.service.errors %}<p class="text-red-600 text-xs mt-1">{{ e }}</p>{% endfor %}
+        </div>
+        <div>
+          <label class="flex text-sm font-medium text-gray-700 mb-2 gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3"/><path d="M4 14c0-2 2-3 6-3s6 1 6 3v3H4v-3z"/></svg>
+            ช่าง
+          </label>
+          <div class="border rounded-lg">
+            {{ form.barber }}
+          </div>
+          {% for e in form.barber.errors %}<p class="text-red-600 text-xs mt-1">{{ e }}</p>{% endfor %}
+        </div>
+        <div>
+          <label class="flex text-sm font-medium text-gray-700 mb-2 gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="9"/><path d="M10 5v5l3 2"/></svg>
+            วัน
+          </label>
+          <div class="border rounded-lg">
+            {{ form.date }}
+          </div>
+          {% for e in form.date.errors %}<p class="text-red-600 text-xs mt-1">{{ e }}</p>{% endfor %}
+        </div>
+      </div>
+      <div class="flex gap-3 pt-2">
+        <button type="submit" class="flex-1 md:flex-none px-6 py-2 bg-green-600 hover:bg-green-500 text-white font-medium rounded-lg shadow transition flex items-center justify-center gap-2">
+          ค้นหาเวลาว่าง
+        </button>
+        <a href="{% url 'my_bookings' %}" class="flex-1 md:flex-none px-6 py-2 bg-gray-300 hover:bg-gray-200 text-gray-800 font-medium rounded-lg text-center shadow transition flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-700" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 10H5M8 13l-3-3 3-3"/></svg>
+          ย้อนกลับ
+        </a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Time slots -->
   {% if slots %}
-    <div class="border rounded-2xl p-4 bg-white">
-      <h2 class="text-lg font-semibold mb-3">
-        เลือกเวลาที่ต้องการสำหรับ {{ service.name }} กับช่าง {{ barber.username }} ในวันที่ {{ date }}
-      </h2>
-      <div class="grid sm:grid-cols-3 md:grid-cols-4 gap-3">
+    <div class="bg-white rounded-2xl p-6 text-black shadow-md">
+      <h2 class="text-lg font-semibold mb-4 flex items-center gap-2">เลือกเวลาที่ต้องการ</h2>
+      <div class="mb-3 p-3 bg-amber-50 rounded-lg border border-amber-200 flex items-start gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 1v6m5-3H5M10 19c-4.97 0-9-4.03-9-9s4.03-9 9-9 9 4.03 9 9-4.03 9-9 9z"/></svg>
+        <p class="text-sm text-amber-900"><strong>{{ service.name }}</strong> กับ <strong>{{ barber.username }}</strong> ในวันที่ <strong>{{ date }}</strong></p>
+      </div>
+      
+      <div class="grid sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
         {% for s in slots %}
           <form method="post" class="inline">
             {% csrf_token %}
             {{ confirm_form.as_p }}
             <input type="hidden" name="start_at" value="{{ s|date:'c' }}">
-            <button class="w-full border rounded-lg py-2 hover:bg-gray-50">
+            <button type="submit" class="w-full px-3 py-3 bg-gray-50 hover:bg-green-100 border border-gray-200 hover:border-green-400 rounded-lg font-medium text-sm transition shadow-sm">
               {{ s|date:"H:i" }}
             </button>
           </form>
         {% endfor %}
       </div>
-      <p class="text-xs text-gray-500 mt-2">*ต้องแก้ไขล่วงหน้าอย่างน้อย 1 ชั่วโมงก่อนถึงเวลาคิว</p>
+      
+      <div class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-200 flex items-start gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-500 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="9"/><path d="M10 5v5l3 2"/><path d="M9 14h2v2H9z"/></svg>
+        <p class="text-xs text-blue-900"><strong>หมายเหตุ:</strong> ต้องแก้ไขล่วงหน้าก่อนถึงวันคิว</p>
+      </div>
     </div>
   {% elif slots is not none %}
-    <div class="border rounded-2xl p-4 bg-white">
-      <p class="text-gray-600">ไม่มีเวลาว่างตามที่เลือก ลองเลือกวันอื่นหรือช่างคนอื่น</p>
+    <div class="bg-white rounded-2xl p-6 text-black shadow-md border-l-4 border-red-500">
+      <h2 class="text-lg font-semibold mb-2 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="9"/><path d="M10 14v.01M10 5v5"/></svg>
+        ไม่มีเวลาว่าง
+      </h2>
+      <p class="text-gray-600">ไม่พบเวลาว่างตามที่เลือก ลองเลือก:</p>
+      <ul class="list-disc list-inside text-gray-600 text-sm mt-2 space-y-1">
+        <li>วันอื่นในสัปดาห์ต่อไป</li>
+        <li>ช่างคนอื่น</li>
+        <li>บริการที่มีเวลาทำน้อยกว่า</li>
+      </ul>
     </div>
   {% endif %}
 </section>
