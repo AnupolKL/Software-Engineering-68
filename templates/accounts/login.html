@@ -4,30 +4,64 @@
 {% block title %}เข้าสู่ระบบ | CUTCAMP{% endblock %}
 
 {% block content %}
-<div class="max-w-md mx-auto p-6 text-white bg-[#2a3731] rounded-xl">
-  <h1 class="text-2xl font-semibold mb-4">เข้าสู่ระบบ</h1>
+<div class="max-w-md mx-auto p-8 bg-[#2a3731] rounded-2xl shadow-xl">
+  <div class="bg-white/5 rounded-xl p-6">
+    <h1 class="text-2xl font-extrabold text-white mb-2">เข้าสู่ระบบ</h1>
+    <p class="text-sm text-gray-300 mb-4">เข้าสู่ระบบเพื่อจัดการการจองและดูประวัติของคุณ</p>
 
-  <form method="post" class="space-y-4">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
+    <form method="post" class="styled-form space-y-4">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
 
-    <div>
-      <label class="block text-sm">ชื่อผู้ใช้</label>
-      {{ form.username }}
-      {% for e in form.username.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
-    </div>
+      <div>
+        <label class="block text-sm text-gray-200 mb-1">ชื่อผู้ใช้</label>
+        {{ form.username }}
+        {% for e in form.username.errors %}<p class="text-rose-500 text-xs mt-1">{{ e }}</p>{% endfor %}
+      </div>
 
-    <div>
-      <label class="block text-sm">รหัสผ่าน</label>
-      {{ form.password }}
-      {% for e in form.password.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
-    </div>
+      <div class="relative">
+        <label class="block text-sm text-gray-200 mb-1">รหัสผ่าน</label>
+        {{ form.password }}
+        <button type="button" id="toggle-pass" class="absolute right-3 top-9 text-gray-400 text-sm">แสดง</button>
+        {% for e in form.password.errors %}<p class="text-rose-500 text-xs mt-1">{{ e }}</p>{% endfor %}
+      </div>
 
-    <button class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">เข้าสู่ระบบ</button>
-    <p class="text-sm mt-2">
-      ยังไม่มีบัญชี?
-      <a class="text-blue-600" href="{% url 'register' %}">สมัครสมาชิก</a>
-    </p>
-  </form>
+      <div class="flex items-center justify-between gap-3">
+        <button class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-semibold">
+          เข้าสู่ระบบ
+        </button>
+
+        <a href="{% url 'register' %}" class="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500">
+          ลงทะเบียน
+        </a>
+      </div>
+
+    </form>
+  </div>
+
+  <style>
+    .styled-form input[type="text"], .styled-form input[type="password"], .styled-form input[type="email"] {
+      width: 100%;
+      padding: 0.75rem 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(148,163,184,0.15);
+      background-color: rgba(255,255,255,0.95);
+      color: #0f1720;
+    }
+    .styled-form input:focus { outline: none; box-shadow: 0 0 0 4px rgba(250,204,21,0.08); border-color: rgba(250,204,21,0.8); }
+  </style>
+
+  <script>
+    (function(){
+      const btn = document.getElementById('toggle-pass');
+      if (!btn) return;
+      btn.addEventListener('click', function(){
+        const input = document.querySelector('input[name$="password"], input#id_password');
+        if (!input) return;
+        if (input.type === 'password') { input.type = 'text'; btn.textContent = 'ซ่อน'; }
+        else { input.type = 'password'; btn.textContent = 'แสดง'; }
+      });
+    })();
+  </script>
 </div>
 {% endblock %}

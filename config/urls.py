@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from accounts.views import register_view, LoginPage, LogoutPage
+from accounts.views import register_view, LoginPage, LogoutPage, edit_profile
 from services.views import ServiceListView, ServiceDetailView
 from bookings import views_public as booking_public
 from django.views.generic import TemplateView
@@ -74,6 +74,9 @@ urlpatterns = [
 
     # Hair AI
     path("hair-ai/", hair_ai_view, name="hair_ai"),
+
+    # Profile Edit
+    path("profile/edit/", edit_profile, name="edit_profile"),
     
 ]
 

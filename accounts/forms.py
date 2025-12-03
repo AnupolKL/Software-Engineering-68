@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import PasswordChangeForm
 
 User = get_user_model()
 
@@ -36,4 +37,44 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(
         label="รหัสผ่าน",
         widget=forms.PasswordInput(attrs={"class": "border rounded w-full p-2"})
+    )
+
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = (
+            "username",
+            "nickname",
+            "phone",
+            "email",
+            "photo",
+            "password1",
+            "password2",
+        )
+        labels = {
+            "username": "ชื่อผู้ใช้",
+            "nickname": "ชื่อเล่น",
+            "phone": "เบอร์โทร",
+            "email": "อีเมล",
+            "photo": "รูปโปรไฟล์",
+        }
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ["nickname", "phone", "email", "photo"]
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    """ทำให้ใช้ Tailwind + รวมในหน้าเดียวได้"""
+    old_password = forms.CharField(
+        label="รหัสผ่านปัจจุบัน",
+        widget=forms.PasswordInput(attrs={"class": "form-input"})
+    )
+    new_password1 = forms.CharField(
+        label="รหัสผ่านใหม่",
+        widget=forms.PasswordInput(attrs={"class": "form-input"})
+    )
+    new_password2 = forms.CharField(
+        label="ยืนยันรหัสผ่านใหม่",
+        widget=forms.PasswordInput(attrs={"class": "form-input"})
     )

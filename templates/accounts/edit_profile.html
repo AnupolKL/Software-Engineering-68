@@ -1,0 +1,382 @@
+{% extends "base.html" %}
+{% block title %}แก้ไขโปรไฟล์ | CUTCAMP{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[#1c2620] py-12 px-4">
+  <div class="max-w-2xl mx-auto space-y-8">
+    
+    <!-- Messages Alert -->
+    {% if messages %}
+      {% for message in messages %}
+        <div class="rounded-lg px-6 py-4 flex items-center gap-3 shadow-lg animate-fade-in
+          {% if message.tags == 'error' %}
+            bg-red-50 border border-red-200
+          {% elif message.tags == 'success' %}
+            bg-green-50 border border-green-200
+          {% else %}
+            bg-blue-50 border border-blue-200
+          {% endif %}
+        ">
+          {% if message.tags == 'error' %}
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-600 flex-shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="10" cy="10" r="9"/>
+              <path d="M 10 5 L 10 11"/>
+              <circle cx="10" cy="14" r="0.5"/>
+            </svg>
+            <span class="text-red-800 font-medium">{{ message }}</span>
+          {% elif message.tags == 'success' %}
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-green-800 font-medium">{{ message }}</span>
+          {% endif %}
+        </div>
+      {% endfor %}
+    {% endif %}
+    
+    <!-- Header -->
+    <div class="text-center mb-8 ">
+      <div class="flex items-center justify-center gap-2 mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-amber-600" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="10" cy="7" r="3"/>
+          <path d="M 3 17 Q 3 13 10 13 Q 17 13 17 17"/>
+        </svg>
+        <h1 class="text-3xl font-extrabold text-white">แก้ไขโปรไฟล์</h1>
+      </div>
+      <p class="text-gray-400">แก้ไขข้อมูลส่วนตัวและรหัสผ่านของคุณ</p>
+    </div>
+
+    <!-- Profile Information Card -->
+    <div class="bg-[#2a3731] rounded-2xl shadow-xl overflow-hidden ">
+      <!-- Card Header -->
+      <div class="bg-gradient-to-r from-[#2a3731] to-[#1f2a23] px-8 py-6 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="10" cy="7" r="3"/>
+            <path d="M 3 17 Q 3 13 10 13 Q 17 13 17 17"/>
+          </svg>
+          <h2 class="text-xl font-bold text-white">ข้อมูลส่วนตัว</h2>
+        </div>
+      </div>
+
+      <!-- Card Body -->
+      <div class="p-8 space-y-6">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" name="update_profile" value="1">
+
+          <!-- Avatar Section -->
+          <div class="flex flex-col items-center space-y-4 pb-6 border-b border-gray-200">
+            <div class="relative group">
+              {# มี <img id="profilePreview"> เสมอ #}
+              <img
+                id="profilePreview"
+                src="{% if request.user.photo %}{{ request.user.photo.url }}{% else %}https://via.placeholder.com/150{% endif %}"
+                class="w-32 h-32 rounded-full object-cover shadow-lg ring-4 ring-amber-600/20 bg-gradient-to-br from-amber-600 to-[#2a3731]"
+                alt="profile preview"
+              >
+
+              <label for="id_photo"
+                     class="absolute inset-0 rounded-full bg-black/0 group-hover:bg-black/30 flex items-center justify-center cursor-pointer transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="h-8 w-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                     viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M 3 8 L 3 16 Q 3 17 4 17 L 16 17 Q 17 17 17 16 L 17 8"/>
+                  <path d="M 7 8 L 8 5 Q 8 4 9 4 L 11 4 Q 12 4 12 5 L 13 8"/>
+                  <circle cx="10" cy="12" r="2"/>
+                </svg>
+              </label>
+            </div>
+
+            {# ซ่อนไฟล์ input แต่ยังอยู่ใน DOM และมี id="id_photo" ตาม Django #}
+            <div class="hidden">
+              {{ profile_form.photo }}
+            </div>
+
+            <p class="text-xs text-gray-500 text-center">คลิกบนรูปภาพเพื่ออัปโหลดรูปใหม่</p>
+          </div>
+
+          <!-- Form Fields -->
+          <div class="space-y-5 pt-6">
+            <!-- Nickname -->
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2">ชื่อเล่น</label>
+              {{ profile_form.nickname }}
+              <style>
+                #id_nickname {
+                  width: 100%;
+                  padding: 0.75rem;
+                  border-radius: 0.75rem;
+                  border: 1px solid rgba(148, 163, 184, 0.2);
+                  background-color: rgba(255, 255, 255, 0.98);
+                  font-size: 1rem;
+                  transition: all 0.3s ease;
+                }
+                #id_nickname:focus {
+                  outline: none;
+                  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.12);
+                  border-color: rgba(250, 204, 21, 0.8);
+                  background-color: rgba(255, 255, 255, 1);
+                }
+              </style>
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2">เบอร์โทร</label>
+              {{ profile_form.phone }}
+              <style>
+                #id_phone {
+                  width: 100%;
+                  padding: 0.75rem;
+                  border-radius: 0.75rem;
+                  border: 1px solid rgba(148, 163, 184, 0.2);
+                  background-color: rgba(255, 255, 255, 0.98);
+                  font-size: 1rem;
+                  transition: all 0.3s ease;
+                }
+                #id_phone:focus {
+                  outline: none;
+                  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.12);
+                  border-color: rgba(250, 204, 21, 0.8);
+                  background-color: rgba(255, 255, 255, 1);
+                }
+              </style>
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2">อีเมล</label>
+              {{ profile_form.email }}
+              <style>
+                #id_email {
+                  width: 100%;
+                  padding: 0.75rem;
+                  border-radius: 0.75rem;
+                  border: 1px solid rgba(148, 163, 184, 0.2);
+                  background-color: rgba(255, 255, 255, 0.98);
+                  font-size: 1rem;
+                  transition: all 0.3s ease;
+                }
+                #id_email:focus {
+                  outline: none;
+                  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.12);
+                  border-color: rgba(250, 204, 21, 0.8);
+                  background-color: rgba(255, 255, 255, 1);
+                }
+              </style>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="w-max mt-8 px-6 py-2 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold rounded-lg shadow-lg transition-all duration-300 transform hover:shadow-xl flex items-center justify-center gap-2 group">
+            บันทึกข้อมูล
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Change Password Card -->
+    <div class="bg-[#2a3731] rounded-2xl shadow-xl overflow-hidden">
+      <!-- Card Header -->
+      <div class="bg-gradient-to-r from-[#2a3731] to-[#1f2a23] px-8 py-6 border-b border-gray-200">
+        <div class="flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-600" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="4" y="9" width="12" height="8" rx="1"/>
+            <path d="M 7 9 V 6 Q 7 4 10 4 Q 13 4 13 6 V 9"/>
+          </svg>
+          <h2 class="text-xl font-bold text-white">เปลี่ยนรหัสผ่าน</h2>
+        </div>
+      </div>
+
+      <!-- Card Body -->
+      <div class="p-8 space-y-6">
+        <form method="post">
+          {% csrf_token %}
+          <input type="hidden" name="change_password" value="1">
+
+          <div class="space-y-5">
+            <!-- Old Password -->
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2">รหัสผ่านปัจจุบัน</label>
+              {{ password_form.old_password }}
+              {% if password_form.old_password.errors %}
+                <div class="mt-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                  </svg>
+                  <div>{{ password_form.old_password.errors.0 }}</div>
+                </div>
+              {% endif %}
+              <style>
+                #id_old_password {
+                  width: 100%;
+                  padding: 0.75rem;
+                  border-radius: 0.75rem;
+                  border: 1px solid rgba(148, 163, 184, 0.2);
+                  background-color: rgba(255, 255, 255, 0.98);
+                  font-size: 1rem;
+                  transition: all 0.3s ease;
+                }
+                #id_old_password:focus {
+                  outline: none;
+                  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.12);
+                  border-color: rgba(250, 204, 21, 0.8);
+                  background-color: rgba(255, 255, 255, 1);
+                }
+              </style>
+            </div>
+
+            <!-- New Password 1 -->
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2">รหัสผ่านใหม่</label>
+              <div class="relative">
+                {{ password_form.new_password1 }}
+                <button type="button" id="toggle-new-pass" class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-amber-600 hover:text-amber-700 font-medium">แสดง</button>
+              </div>
+              {% if password_form.new_password1.errors %}
+                <div class="mt-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+                  {% for error in password_form.new_password1.errors %}
+                    <div class="flex items-center gap-2 mb-1 last:mb-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>{{ error }}</span>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <style>
+                #id_new_password1 {
+                  width: 100%;
+                  padding: 0.75rem;
+                  border-radius: 0.75rem;
+                  border: 1px solid rgba(148, 163, 184, 0.2);
+                  background-color: rgba(255, 255, 255, 0.98);
+                  font-size: 1rem;
+                  transition: all 0.3s ease;
+                  padding-right: 3.5rem;
+                }
+                #id_new_password1:focus {
+                  outline: none;
+                  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.12);
+                  border-color: rgba(250, 204, 21, 0.8);
+                  background-color: rgba(255, 255, 255, 1);
+                }
+              </style>
+            </div>
+
+            <!-- New Password 2 -->
+            <div>
+              <label class="block text-sm font-semibold text-white mb-2">ยืนยันรหัสผ่านใหม่</label>
+              <div class="relative">
+                {{ password_form.new_password2 }}
+                <button type="button" id="toggle-confirm-pass" class="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-amber-600 hover:text-amber-700 font-medium">แสดง</button>
+              </div>
+              {% if password_form.new_password2.errors %}
+                <div class="mt-2 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg p-3">
+                  {% for error in password_form.new_password2.errors %}
+                    <div class="flex items-center gap-2 mb-1 last:mb-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                      </svg>
+                      <span>{{ error }}</span>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+              <style>
+                #id_new_password2 {
+                  width: 100%;
+                  padding: 0.75rem;
+                  border-radius: 0.75rem;
+                  border: 1px solid rgba(148, 163, 184, 0.2);
+                  background-color: rgba(255, 255, 255, 0.98);
+                  font-size: 1rem;
+                  transition: all 0.3s ease;
+                  padding-right: 3.5rem;
+                }
+                #id_new_password2:focus {
+                  outline: none;
+                  box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.12);
+                  border-color: rgba(250, 204, 21, 0.8);
+                  background-color: rgba(255, 255, 255, 1);
+                }
+              </style>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="w-full mt-8 px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white font-bold rounded-lg shadow-lg transition-all duration-300 transform hover:shadow-xl flex items-center justify-center gap-2 group">
+            เปลี่ยนรหัสผ่าน
+          </button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // พรีวิวรูปโปรไฟล์
+    const fileInput = document.getElementById("id_photo");
+    const previewImg = document.getElementById("profilePreview");
+
+    if (fileInput && previewImg) {
+      fileInput.addEventListener("change", function (e) {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            previewImg.src = event.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    // Toggle new password
+    const toggleNew = document.getElementById('toggle-new-pass');
+    const toggleConfirm = document.getElementById('toggle-confirm-pass');
+
+    if (toggleNew) {
+      toggleNew.addEventListener('click', function(e) {
+        e.preventDefault();
+        const input = document.getElementById('id_new_password1');
+        if (!input) return;
+        input.type = input.type === 'password' ? 'text' : 'password';
+        this.textContent = input.type === 'password' ? 'แสดง' : 'ซ่อน';
+      });
+    }
+
+    if (toggleConfirm) {
+      toggleConfirm.addEventListener('click', function(e) {
+        e.preventDefault();
+        const input = document.getElementById('id_new_password2');
+        if (!input) return;
+        input.type = input.type === 'password' ? 'text' : 'password';
+        this.textContent = input.type === 'password' ? 'แสดง' : 'ซ่อน';
+      });
+    }
+  });
+</script>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+</style>
+
+{% endblock %}
