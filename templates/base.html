@@ -23,7 +23,41 @@
         <a href="{% url 'service_list' %}" class="hover:text-yellow-300">บริการ</a>
       {% endif %}
         <a href="{% url 'reviews_page' %}" class="hover:text-yellow-300">รีวิว</a>
-        <a href="#" class="hover:text-yellow-300">ติดต่อ</a>
+
+        {# ▼▼ แทนลิงก์ “ติดต่อ” เดิมด้วย dropdown ▼▼ #}
+        <div class="relative" id="contactDropdown">
+          <button id="contactToggle" class="hover:text-yellow-300 flex items-center gap-1">
+            ติดต่อ
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="h-4 w-4 transition-transform duration-200"
+                 id="contactChevron"
+                 fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <div id="contactMenu"
+               class="hidden absolute left-0 mt-2 w-56 bg-[#372121] border border-white/10 rounded-lg shadow-lg z-40 text-sm">
+            <div class="px-3 py-2 border-b border-white/10">
+              <p class="font-semibold text-green-600">CUTCAMP Barber</p>
+              <p class="text-xs text-gray-300">ข้อมูลติดต่อร้าน</p>
+            </div>
+
+            <p class="block px-3 py-2">
+              โทร : 099-123-4567
+            </p>
+
+            <p class="block px-3 py-2">
+              Line : @cutcampbarber
+            </p>
+
+            <p class="block px-3 py-2 rounded-b-lg">
+              Facebook : CUTCAMP Barber
+            </p>
+          </div>
+        </div>
+        {# ▲▲ จบส่วน dropdown ติดต่อ ▲▲ #}
       </div>
 
       <div class="hidden md:flex gap-10 text-sm relative left-50">
@@ -89,21 +123,45 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+    // dropdown ผู้ใช้
     const dropdownToggle = document.getElementById("dropdownToggle");
     const dropdownMenu = document.getElementById("dropdownMenu");
-    const container = document.getElementById("userDropdown");
+    const userContainer = document.getElementById("userDropdown");
 
-    if (dropdownToggle) {
+    if (dropdownToggle && dropdownMenu && userContainer) {
         dropdownToggle.addEventListener("click", function (e) {
             e.stopPropagation();
             dropdownMenu.classList.toggle("hidden");
         });
     }
 
-    //ปิด dropdown ถ้าคลิกรอบนอก
+    // dropdown ติดต่อ
+    const contactContainer = document.getElementById("contactDropdown");
+    const contactToggle = document.getElementById("contactToggle");
+    const contactMenu = document.getElementById("contactMenu");
+    const contactChevron = document.getElementById("contactChevron");
+
+    if (contactToggle && contactMenu && contactContainer) {
+        contactToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            contactMenu.classList.toggle("hidden");
+            if (contactChevron) {
+              contactChevron.classList.toggle("rotate-180");
+            }
+        });
+    }
+
+    // ปิด dropdown ถ้าคลิกรอบนอก
     document.addEventListener("click", function (e) {
-        if (!container.contains(e.target)) {
+        if (userContainer && dropdownMenu && !userContainer.contains(e.target)) {
             dropdownMenu.classList.add("hidden");
+        }
+        if (contactContainer && contactMenu && !contactContainer.contains(e.target)) {
+            contactMenu.classList.add("hidden");
+            if (contactChevron) {
+              contactChevron.classList.remove("rotate-180");
+            }
         }
     });
 });
