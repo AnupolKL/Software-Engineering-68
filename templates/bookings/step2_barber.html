@@ -1,29 +1,86 @@
 {% extends "base.html" %}
 {% block title %}เลือกช่าง | CUTCAMP{% endblock %}
 {% block content %}
-<section class="max-w-4xl mx-auto p-6 space-y-4 bg-[#2a3731] rounded-xl">
-  <h1 class="text-2xl font-bold text-white">เลือกช่างสำหรับบริการ: {{ service.name }}</h1>
+<section class="max-w-5xl mx-auto p-8 space-y-6 bg-[#2a3731] rounded-2xl text-white shadow-xl">
+  
+  <!-- Header -->
+  <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight">เลือกช่าง</h1>
+      <p class="mt-2 text-sm text-gray-300">สำหรับบริการ <strong>{{ service.name }}</strong></p>
+    </div>
+  </header>
 
-  <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-    {% for b in barbers %}
-      <a href="{% url 'booking_step3' service.id b.id %}"
-         class="group border rounded-xl p-4 bg-white hover:shadow transition">
-        <div class="w-24 h-24 mx-auto rounded-full overflow-hidden">
-          {% if b.avatar %}
-            <img src="{{ b.avatar.url }}" class="w-full h-full object-cover" alt="{{ b.username }}">
-          {% else %}
-            <!-- fallback ถ้ายังไม่มีรูป -->
-            <div class="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
-              ไม่มีรูป
-            </div>
-          {% endif %}
-        </div>
-        <h2 class="text-center font-semibold mt-3 group-hover:underline">{{ b.username }}</h2>
-        <p class="text-center text-sm text-gray-600">ช่างประจำร้าน</p>
-      </a>
-    {% empty %}
-      <p>ยังไม่มีช่าง</p>
-    {% endfor %}
+  <!-- Service info card -->
+  <div class="bg-white rounded-2xl p-4 text-black shadow-md">
+    <div class="flex items-center gap-3">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7c0-1 1-2 2-2h.5M15 5h.5c1 0 2 1 2 2v10c0 1-1 2-2 2H5c-1 0-2-1-2-2V7c0-1 1-2 2-2M7 5l3-2 3 2M7 10h6M7 14h6"/></svg>
+      <div>
+        <p class="text-xs text-gray-500">บริการที่เลือก</p>
+        <p class="font-semibold text-gray-900">{{ service.name }}</p>
+      </div>
+      <span class="ml-auto text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full">{{ service.duration_min }} นาที</span>
+    </div>
   </div>
+
+  <!-- Barbers grid -->
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="7" r="3"/><path d="M4 14c0-2 2-3 6-3s6 1 6 3v3H4v-3z"/></svg>
+      ช่างของเรา
+    </h2>
+
+    {% if barbers %}
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {% for b in barbers %}
+          <a href="{% url 'booking_step3' service.id b.id %}"
+             class="group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+            
+            <!-- Avatar container -->
+            <div class="relative w-full aspect-square bg-gradient-to-br from-gray-100 to-gray-50 overflow-hidden">
+              {% if b.avatar %}
+                <img src="{{ b.avatar.url }}" class="w-full h-full object-cover" alt="{{ b.username }}">
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300" viewBox="0 0 20 20" fill="currentColor"><circle cx="10" cy="7" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M4 14c0-2 2-3 6-3s6 1 6 3v3H4v-3z" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+                </div>
+              {% endif %}
+              <!-- Overlay on hover -->
+              <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center"></div>
+            </div>
+
+            <!-- Info section -->
+            <div class="p-4 text-black">
+              <h3 class="text-lg font-semibold group-hover:text-amber-600 transition-colors">{{ b.username }}</h3>
+              <p class="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path d="M13 7H7v6h6V7z"/></svg>
+                ช่างประจำร้าน
+              </p>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <!-- Empty state -->
+      <div class="bg-white rounded-2xl p-12 text-black text-center shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-300 mb-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1"><circle cx="10" cy="7" r="3"/><path d="M4 14c0-2 2-3 6-3s6 1 6 3v3H4v-3z"/><line x1="2" y1="2" x2="18" y2="18"/></svg>
+        <p class="text-gray-600 font-medium">ยังไม่มีช่างสำหรับบริการนี้</p>
+        <p class="text-sm text-gray-500 mt-1">กรุณากลับไปเลือกบริการอื่น</p>
+        <a href="{% url 'booking_step1' %}" class="inline-block mt-4 px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-sm rounded-lg transition">
+          ← กลับไปเลือกบริการ
+        </a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Progress indicator -->
+  <div class="flex items-center justify-center gap-2 text-sm text-gray-300 pt-4">
+    <span class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">1</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M8.5 12.5l2.5 2.5 5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+    <span class="w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center">2</span>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M8.5 12.5l2.5 2.5 5-5" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+    <span class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">3</span>
+  </div>
+
 </section>
 {% endblock %}
