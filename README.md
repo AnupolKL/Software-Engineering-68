@@ -1,3 +1,4 @@
+# Step 1
 1.git clone
 
 2.uv run
@@ -25,10 +26,12 @@
 
 6.python manage.py loaddata data_fixed.json
 
+
+# Step 2
 **Run 2 terminals**
 
-# Terminal 1
+**Terminal 1**
 python manage.py runserver
 
-# Terminal 2
+**Terminal 2**
 npm run tw:dev
