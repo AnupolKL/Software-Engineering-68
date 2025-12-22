@@ -1,81 +1,84 @@
 {% extends "base.html" %}
 {% block title %}จัดการคิว | CUTCAMP{% endblock %}
 {% block content %}
-<section class="max-w-7xl mx-auto p-6 space-y-4 text-white bg-[#2a3731] rounded-xl">
-  <a class="font-bold" href="{% url 'admin_dashboard' %}">< กลับ</a>
+<section class="max-w-7xl mx-auto p-6 space-y-4 bg-white rounded-xl">
   <div class="flex items-center justify-between">
-    <h1 class="text-2xl font-bold text-white">จัดการคิว</h1>
-    <a href="{% url 'admin_booking_walkin' %}" class="bg-green-200 hover:bg-green-100 text-black px-4 py-2 rounded">+ เพิ่มคิว Walk-in</a>
+    <div class="flex items-center gap-4">
+      <a class="text-sm text-emerald-600 hover:underline font-medium" href="{% url 'admin_dashboard' %}">&larr; กลับ</a>
+      <h1 class="text-2xl font-bold text-gray-800">จัดการคิว</h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="{% url 'admin_booking_walkin' %}" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg shadow hover:bg-emerald-700">+ เพิ่มคิว Walk-in</a>
+    </div>
   </div>
 
-  <form method="get" class="flex gap-3 items-end flex-wrap">
+  <form method="get" class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
     <div>
-      <label class="block text-sm">วันที่</label>
-      <input type="date" name="start_date" value="{{ start_date|default_if_none:'' }}" class="border rounded p-2">
+      <label class="block text-sm text-gray-600">วันที่</label>
+      <input type="date" name="start_date" value="{{ start_date|default_if_none:'' }}" class="mt-1 block w-full border rounded-lg p-2 shadow-sm focus:ring-emerald-300">
+    </div>
+    <div class="sm:col-span-2">
+      <label class="block text-sm text-gray-600">ค้นหา</label>
+      <input name="q" value="{{ q }}" placeholder="บริการ/ช่าง/ลูกค้า" class="mt-1 block w-full border rounded-lg p-2 shadow-sm">
     </div>
     <div>
-      <label class="block text-sm">ค้นหา</label>
-      <input name="q" value="{{ q }}" placeholder="บริการ/ช่าง/ลูกค้า" class="border rounded p-2 w-64">
-    </div>
-    <div>
-      <label class="block text-sm">สถานะ</label>
-      <select name="status" class="border rounded p-2 text-black bg-white">
+      <label class="block text-sm text-gray-600">สถานะ</label>
+      <select name="status" class="mt-1 block w-full border rounded-lg p-2 shadow-sm">
         <option value="">ทั้งหมด</option>
         <option value="confirmed" {% if status == 'confirmed' %}selected{% endif %}>ยืนยันแล้ว</option>
         <option value="completed" {% if status == 'completed' %}selected{% endif %}>เสร็จสิ้น</option>
         <option value="canceled"  {% if status == 'canceled' %}selected{% endif %}>ยกเลิก</option>
       </select>
     </div>
-    <button class="bg-green-400 text-white px-4 py-2 rounded">กรอง</button>
-    {% if q or status %}
-      <a href="{% url 'admin_booking_list' %}" class="text-sm text-gray-400">ล้างตัวกรอง</a>
-    {% endif %}
+    <div class="sm:col-span-4 flex items-center gap-3">
+      <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg">กรอง</button>
+      {% if q or status %}
+        <a href="{% url 'admin_booking_list' %}" class="text-sm text-gray-500">ล้างตัวกรอง</a>
+      {% endif %}
+    </div>
   </form>
 
-  {% if messages %}
-    <div class="mt-4">
-      {% for message in messages %}
-        {% if 'จองคิวเรียบร้อย' not in message %}
-          <div class="p-3 rounded mb-2 {% if message.tags == 'success' %}bg-green-500 text-white{% else %}bg-gray-500 text-white{% endif %}">{{ message }}</div>
-        {% endif %}
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  <div class="overflow-x-auto text-black rounded-xl">
-    <table class="min-w-full border">
-      <thead class="bg-gray-300">
+  <div class="overflow-x-auto text-gray-800 rounded-xl shadow">
+    <table class="min-w-full divide-y divide-gray-200 bg-white">
+      <thead class="bg-gray-50">
         <tr>
-          <th class="p-2 border">เริ่ม</th>
-          <th class="p-2 border">สิ้นสุด</th>
-          <th class="p-2 border">บริการ</th>
-          <th class="p-2 border">ช่าง</th>
-          <th class="p-2 border">ลูกค้า</th>
-          <th class="p-2 border">ชนิด</th>
-          <th class="p-2 border">สถานะ</th>
-          <th class="p-2 border">จัดการ</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">เริ่ม</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">สิ้นสุด</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">บริการ</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">ช่าง</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">ลูกค้า</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">ชนิด</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">สถานะ</th>
+          <th class="px-4 py-3 text-center text-xs font-medium text-gray-500">จัดการ</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="bg-white divide-y divide-gray-100">
         {% for b in bookings %}
-          <tr class="odd:bg-white even:bg-gray-50">
-            <td class="p-2 border whitespace-nowrap">{{ b.start_at|date:"Y-m-d H:i" }}</td>
-            <td class="p-2 border whitespace-nowrap">{{ b.end_at|date:"Y-m-d H:i" }}</td>
-            <td class="p-2 border">{{ b.service.name }}</td>
-            <td class="p-2 border">{{ b.barber.username }}</td>
-            <td class="p-2 border">{{ b.customer.username|default:"Walk-in" }}</td>
-            <td class="p-2 border">{{ b.get_source_display }}</td>
-            <td class="p-2 border">
-              {% if b.status == "confirmed" %}<span class="text-blue-600">ยืนยัน</span>
-              {% elif b.status == "completed" %}<span class="text-amber-300">เสร็จสิ้น</span>
-              {% else %}<span class="text-gray-500">ยกเลิก</span>{% endif %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-sm whitespace-nowrap">{{ b.start_at|date:"Y-m-d H:i" }}</td>
+            <td class="px-4 py-3 text-sm whitespace-nowrap">{{ b.end_at|date:"Y-m-d H:i" }}</td>
+            <td class="px-4 py-3 text-sm">{{ b.service.name }}</td>
+            <td class="px-4 py-3 text-sm">{{ b.barber.username }}</td>
+            <td class="px-4 py-3 text-sm">{{ b.customer.username|default:"Walk-in" }}</td>
+            <td class="px-4 py-3 text-sm">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{{ b.get_source_display }}</span>
             </td>
-            <td class="p-2 border text-center whitespace-nowrap">
+            <td class="px-4 py-3 text-sm">
+              {% if b.status == "confirmed" %}
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">ยืนยัน</span>
+              {% elif b.status == "completed" %}
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800">เสร็จสิ้น</span>
+              {% else %}
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">ยกเลิก</span>
+              {% endif %}
+            </td>
+            <td class="px-4 py-3 text-center text-sm whitespace-nowrap">
               {% if b.id %}
                 {% if b.status == "confirmed" or b.status == "pending" %}
-                  <a class="bg-amber-200 hover:bg-amber-100 px-2 py-1 rounded-lg text-black" href="{% url 'admin_booking_addon' b.id %}">เพิ่มบริการเสริม</a>
-                  &nbsp;|&nbsp;
-                  <a class="text-white bg-red-500 hover:bg-red-400 px-2 py-1 rounded-lg" href="{% url 'admin_booking_cancel' b.id %}">ยกเลิก</a>
+                  <a class="inline-flex items-center gap-2 bg-amber-200 hover:bg-amber-100 text-gray-800 px-3 py-1 rounded-md text-sm" href="{% url 'admin_booking_addon' b.id %}">
+                    เพิ่มบริการเสริม
+                  </a>
+                  <a class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm ml-2" href="{% url 'admin_booking_cancel' b.id %}">ยกเลิก</a>
                 {% else %}
                   <span class="text-gray-400 text-sm">ปิดการแก้ไข</span>
                 {% endif %}
@@ -83,10 +86,9 @@
                 -
               {% endif %}
             </td>
-
           </tr>
         {% empty %}
-          <tr><td colspan="8" class="p-4 text-center text-black bg-white">ยังไม่มีคิว</td></tr>
+          <tr><td colspan="8" class="p-6 text-center text-gray-500">ยังไม่มีคิว</td></tr>
         {% endfor %}
       </tbody>
     </table>

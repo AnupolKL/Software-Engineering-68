@@ -1,53 +1,54 @@
 {% extends "base.html" %}
 {% block title %}จัดการช่าง | CUTCAMP{% endblock %}
 {% block content %}
-<section class="max-w-6xl mx-auto p-6 bg-[#2a3731] rounded-xl">
-  <a class="font-bold text-white" href="{% url 'admin_dashboard' %}">< กลับ</a>
-  <div class="flex items-center justify-between">
-    <h1 class="text-2xl font-bold text-white">ช่างทั้งหมด</h1>
-    <a href="{% url 'admin_barber_create' %}" class="bg-green-200 text-black px-4 py-2 rounded">+ เพิ่มช่าง</a>
+<section class="max-w-6xl mx-auto p-6 bg-white rounded-xl">
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center gap-4">
+      <a class="text-sm text-emerald-600 hover:underline font-medium" href="{% url 'admin_dashboard' %}">&larr; กลับ</a>
+      <h1 class="text-2xl font-bold text-gray-800">ช่างทั้งหมด</h1>
+    </div>
+    <div>
+      <a href="{% url 'admin_barber_create' %}" class="inline-flex items-center gap-2 bg-emerald-600 text-white px-4 py-2 rounded-lg shadow hover:bg-emerald-700">+ เพิ่มช่าง</a>
+    </div>
   </div>
 
-  <form method="get" class="mt-4">
-    <input name="q" value="{{ q }}" placeholder="ค้นหาชื่อผู้ใช้/อีเมล..."
-           class="border rounded p-2 w-full sm:w-80 bg-white">
+  <form method="get" class="flex items-center gap-3">
+    <input name="q" value="{{ q }}" placeholder="ค้นหาชื่อผู้ใช้/อีเมล..." class="border rounded-lg p-2 w-full sm:w-80 shadow-sm">
+    <button class="bg-emerald-600 text-white px-4 py-2 rounded-lg">ค้นหา</button>
   </form>
 
-  {% if messages %}
-    <div class="mt-4">
-      {% for message in messages %}
-        <div class="p-3 rounded mb-2 {% if message.tags == 'success' %}bg-green-500 text-white{% else %}bg-gray-500 text-white{% endif %}">{{ message }}</div>
-      {% endfor %}
-    </div>
-  {% endif %}
 
-  <div class="mt-4 overflow-x-auto">
-    <table class="min-w-full border">
-      <thead class="bg-gray-300">
+  <div class="mt-4 overflow-x-auto rounded-xl shadow">
+    <table class="min-w-full divide-y divide-gray-200 bg-white">
+      <thead class="bg-gray-50">
         <tr>
-          <th class="p-2 border">ID</th>
-          <th class="p-2 border text-left">ชื่อผู้ใช้</th>
-          <th class="p-2 border">อีเมล</th>
-          <th class="p-2 border">สถานะ</th>
-          <th class="p-2 border">จัดการ</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">ID</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">ชื่อผู้ใช้</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">อีเมล</th>
+          <th class="px-4 py-3 text-left text-xs font-medium text-gray-500">สถานะ</th>
+          <th class="px-4 py-3 text-center text-xs font-medium text-gray-500">จัดการ</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="bg-white divide-y divide-gray-100">
         {% for b in barbers %}
-          <tr class="odd:bg-white even:bg-gray-50">
-            <td class="p-2 border text-center">{{ b.id }}</td>
-            <td class="p-2 border">{{ b.username }}</td>
-            <td class="p-2 border">{{ b.email|default:"-" }}</td>
-            <td class="p-2 border text-center">
-              {% if b.is_active %}<span class="text-green-400">ใช้งาน</span>{% else %}<span class="text-gray-500">ปิด</span>{% endif %}
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3 text-sm text-gray-700">{{ b.id }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ b.username }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ b.email|default:"-" }}</td>
+            <td class="px-4 py-3 text-sm">
+              {% if b.is_active %}
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-700">ใช้งาน</span>
+              {% else %}
+                <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">ปิด</span>
+              {% endif %}
             </td>
-            <td class="p-2 border text-center">
-              <a class="bg-blue-300 hover:bg-blue-200 px-2 py-1 text-black rounded-lg" href="{% url 'admin_barber_edit' b.pk %}">แก้ไข</a>
-              <a class="bg-red-500 hover:bg-red-400 px-2 py-1 text-white rounded-lg"href="{% url 'admin_barber_delete' b.pk %}">ลบ</a>
+            <td class="px-4 py-3 text-center text-sm whitespace-nowrap">
+              <a class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-500 text-white px-3 py-1 rounded-md text-sm" href="{% url 'admin_barber_edit' b.pk %}">แก้ไข</a>
+              <a class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded-md text-sm ml-2" href="{% url 'admin_barber_delete' b.pk %}">ลบ</a>
             </td>
           </tr>
         {% empty %}
-          <tr><td class="p-4 text-center" colspan="5">ยังไม่มีช่าง</td></tr>
+          <tr><td class="p-6 text-center text-gray-500" colspan="5">ยังไม่มีช่าง</td></tr>
         {% endfor %}
       </tbody>
     </table>

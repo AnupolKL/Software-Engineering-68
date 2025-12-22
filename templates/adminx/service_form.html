@@ -1,48 +1,54 @@
 {% extends "base.html" %}
 {% block title %}{% if mode == 'create' %}เพิ่มบริการ{% else %}แก้ไขบริการ{% endif %} | CUTCAMP{% endblock %}
 {% block content %}
-<section class="max-w-3xl mx-auto p-6 bg-[#2a3731] rounded-xl text-white">
-  <a class="font-bold text-white" href="{% url 'admin_service_list' %}">< กลับ</a>
-  <h1 class="text-2xl font-bold mb-4 text-white">{% if mode == 'create' %}เพิ่มบริการ{% else %}แก้ไขบริการ{% endif %}</h1>
+<section class="max-w-3xl mx-auto p-6 bg-white rounded-xl">
+  <div class="flex items-center justify-between mb-4">
+    <a class="text-sm text-emerald-600 hover:underline font-medium" href="{% url 'admin_service_list' %}">&larr; กลับ</a>
+    <h1 class="text-2xl font-bold text-gray-800">{% if mode == 'create' %}เพิ่มบริการ{% else %}แก้ไขบริการ{% endif %}</h1>
+  </div>
   <form method="post" enctype="multipart/form-data" class="space-y-4">
     {% csrf_token %}
-    {{ form.non_field_errors }}
+    {% if form.non_field_errors %}
+      <div class="p-3 bg-red-50 text-red-700 rounded">{{ form.non_field_errors }}</div>
+    {% endif %}
     <div>
-      <label class="block text-sm">ชื่อบริการ</label>
+      <label class="block text-sm text-gray-600">ชื่อบริการ</label>
       {{ form.name }}
-      {% for e in form.name.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+      {% for e in form.name.errors %}<p class="text-red-600 text-sm mt-1">{{ e }}</p>{% endfor %}
     </div>
     <div>
-      <label class="block text-sm">รายละเอียด</label>
+      <label class="block text-sm text-gray-600">รายละเอียด</label>
       {{ form.description }}
-      {% for e in form.description.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+      {% for e in form.description.errors %}<p class="text-red-600 text-sm mt-1">{{ e }}</p>{% endfor %}
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm">ระยะเวลา (นาที)</label>
+        <label class="block text-sm text-gray-600">ระยะเวลา (นาที)</label>
         {{ form.duration_min }}
-        {% for e in form.duration_min.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+        {% for e in form.duration_min.errors %}<p class="text-red-600 text-sm mt-1">{{ e }}</p>{% endfor %}
       </div>
       <div>
-        <label class="block text-sm">ราคา</label>
+        <label class="block text-sm text-gray-600">ราคา</label>
         {{ form.price }}
-        {% for e in form.price.errors %}<p class="text-red-600 text-sm">{{ e }}</p>{% endfor %}
+        {% for e in form.price.errors %}<p class="text-red-600 text-sm mt-1">{{ e }}</p>{% endfor %}
       </div>
     </div>
     <div>
-    <label class="block text-sm">รูปภาพ (ไม่บังคับ)</label>
-    {{ form.image }}
+      <label class="block text-sm text-gray-600">รูปภาพ (ไม่บังคับ)</label>
+      {{ form.image }}
       {% if form.instance.image %}
-        <img src="{{ form.instance.image.url }}" alt="" class="mt-2 w-40 h-40 object-cover rounded">
+        <img src="{{ form.instance.image.url }}" alt="" class="mt-3 w-40 h-40 object-cover rounded border">
       {% endif %}
-   </div>
-    <label class="inline-flex items-center gap-2">
-      {{ form.is_active }} <span>เปิดให้บริการ</span>
+      {% for e in form.image.errors %}<p class="text-red-600 text-sm mt-1">{{ e }}</p>{% endfor %}
+    </div>
+    <label class="inline-flex items-center gap-3">
+      {{ form.is_active }}
+      <span class="text-sm text-gray-700">เปิดให้บริการ</span>
     </label>
 
     <div class="flex gap-3 mt-4">
-      <button class="bg-green-200 text-black px-5 py-2 rounded hover:bg-green-50">บันทึก</button>
-      <a href="{% url 'admin_service_list' %}" class="px-5 py-2 border rounded hover:bg-gray-600">ยกเลิก</a>
+      <button class="bg-emerald-600 text-white px-5 py-2 rounded-lg shadow hover:bg-emerald-700">บันทึก</button>
+      <a href="{% url 'admin_service_list' %}" class="px-5 py-2 border rounded-lg text-gray-700 hover:bg-gray-50">ยกเลิก</a>
     </div>
   </form>
 </section>
