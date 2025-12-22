@@ -48,4 +48,10 @@
 
 **Terminal 2**
 
+ทำการติดตั้ง Tailwind
+
+    npm install -D tailwindcss
+
+Run
+
     npm run tw:dev
