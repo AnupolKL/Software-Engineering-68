@@ -1,37 +1,57 @@
-# Step 1
-1.git clone
+# Step 1 Run comnand
+1.clone จาก Github
 
-2.uv run
+    git clone
 
-3.pip install -r requirements.txt
+2.ใช้คำสั่ง
 
-4. สร้าง Data base ใน postgresql
-    - เปิด pgAdmin > Servers > PostgreSQL > ตลิกขวาที่ Databases > create > database
+    uv run
 
-    4.1 สร้าง env file
+3.ติดตั้ง requirements
+
+    pip install -r requirements.txt
+
+# Step 2 Database & env
+**1.สร้าง Data base ใน postgresql**
+
+- เปิด pgAdmin > Servers > PostgreSQL > ตลิกขวาที่ Databases > create > database
+
+**2.สร้าง env file**
+
     DEBUG=True
     SECRET_KEY=change-me-in-prod
     ALLOWED_HOSTS=127.0.0.1,localhost
     TIME_ZONE=Asia/Bangkok
-
+    
     DB_NAME=
     DB_USER=
     DB_PASSWORD=
     DB_HOST=127.0.0.1
     DB_PORT=5432
-
+    
     GEMINI_API_KEY=AIzaSyC8DmV6APH_DQLwQXjK7uU65QbGSxh3g9w
 
-5.python manage.py migrate
+**3.ทำการ migrate**
 
-6.python manage.py loaddata data_fixed.json
+    python manage.py migrate
+
+**4.เอาข้อมูลลง Database**
+
+    python manage.py loaddata data_fixed.json
 
 
-# Step 2
-**Run 2 terminals**
+# Run 2 terminals
 
 **Terminal 1**
-python manage.py runserver
+
+    python manage.py runserver
 
 **Terminal 2**
-npm run tw:dev
+
+ทำการติดตั้ง Tailwind
+
+    npm install -D tailwindcss
+
+Run
+
+    npm run tw:dev
