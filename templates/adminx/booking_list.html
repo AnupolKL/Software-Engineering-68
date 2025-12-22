@@ -10,8 +10,12 @@
 
   <form method="get" class="flex gap-3 items-end flex-wrap">
     <div>
+      <label class="block text-sm">วันที่</label>
+      <input type="date" name="start_date" value="{{ start_date|default_if_none:'' }}" class="border rounded p-2">
+    </div>
+    <div>
       <label class="block text-sm">ค้นหา</label>
-      <input name="q" value="{{ q }}" placeholder="บริการ/ช่าง/ลูกค้า/หมายเหตุ" class="border rounded p-2 w-64">
+      <input name="q" value="{{ q }}" placeholder="บริการ/ช่าง/ลูกค้า" class="border rounded p-2 w-64">
     </div>
     <div>
       <label class="block text-sm">สถานะ</label>
@@ -22,9 +26,9 @@
         <option value="canceled"  {% if status == 'canceled' %}selected{% endif %}>ยกเลิก</option>
       </select>
     </div>
-    <button class="bg-gray-900 text-white px-4 py-2 rounded">กรอง</button>
+    <button class="bg-green-400 text-white px-4 py-2 rounded">กรอง</button>
     {% if q or status %}
-      <a href="{% url 'admin_booking_list' %}" class="text-sm text-gray-600">ล้างตัวกรอง</a>
+      <a href="{% url 'admin_booking_list' %}" class="text-sm text-gray-400">ล้างตัวกรอง</a>
     {% endif %}
   </form>
 
