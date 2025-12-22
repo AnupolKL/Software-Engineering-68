@@ -35,7 +35,9 @@
   {% if messages %}
     <div class="mt-4">
       {% for message in messages %}
-        <div class="p-3 rounded mb-2 {% if message.tags == 'success' %}bg-green-500 text-white{% else %}bg-gray-500 text-white{% endif %}">{{ message }}</div>
+        {% if 'จองคิวเรียบร้อย' not in message %}
+          <div class="p-3 rounded mb-2 {% if message.tags == 'success' %}bg-green-500 text-white{% else %}bg-gray-500 text-white{% endif %}">{{ message }}</div>
+        {% endif %}
       {% endfor %}
     </div>
   {% endif %}
