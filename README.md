@@ -9,6 +9,7 @@
     - เปิด pgAdmin > Servers > PostgreSQL > ตลิกขวาที่ Databases > create > database
 
     4.1 สร้าง env file
+
     DEBUG=True
     SECRET_KEY=change-me-in-prod
     ALLOWED_HOSTS=127.0.0.1,localhost
